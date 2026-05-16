@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Architect — Technical Whitepaper v2.1</title>
+<meta name="description" content="Civilization Operating Protocol for Transparent Governance, Universal Sector Accountability, AI Safety, and Human Purpose. Technical whitepaper with full architecture, references, and implementation specification.">
+<style>
+:root {
+  --bg: #071018;
+  --fg: #c7d4e2;
+  --fg-bright: #f4f7fb;
+  --accent: #50d6b4;
+  --accent2: #2f8cff;
+  --border: rgba(151,178,206,0.22);
+  --card: rgba(255,255,255,0.04);
+  --card-border: rgba(151,178,206,0.15);
+  --code-bg: #0d1a24;
+  --warn: #d29922;
+  --red: #f85149;
+  --purple: #bc8cff;
+  --surface: #0c1620;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 17px/1.78 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Layout ────────────────────────────────────────── */
+.page { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+/* ── Hero ──────────────────────────────────────────── */
+.hero {
+  text-align: center;
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3rem;
+}
+.hero .logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: var(--bg);
+  font-weight: 950;
+  font-size: 32px;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: 2.8rem;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--fg-bright);
+  margin-bottom: 0.5rem;
+}
+.hero .subtitle {
+  font-size: 1.1rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+.hero .meta {
+  font-size: 0.85rem;
+  color: #7f92a7;
+  line-height: 1.6;
+}
+.hero .abstract {
+  max-width: 700px;
+  margin: 1.5rem auto 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--fg);
+  text-align: left;
+}
+
+/* ── Typography ────────────────────────────────────── */
+h1 { font-size: 2rem; color: var(--fg-bright); letter-spacing: -0.03em; margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--accent); }
+h2 { font-size: 1.5rem; color: var(--accent); margin: 2.5rem 0 0.8rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.15rem; color: var(--purple); margin: 1.8rem 0 0.5rem; }
+h4 { font-size: 1.02rem; color: var(--warn); margin: 1.2rem 0 0.3rem; }
+p { margin: 0.7rem 0; }
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--accent); }
+strong { color: var(--fg-bright); }
+em { color: #8b949e; }
+ul, ol { margin: 0.7rem 0 0.7rem 1.5rem; }
+li { margin: 0.35rem 0; }
+li::marker { color: var(--accent); }
+hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem 1.2rem;
+  margin: 1.2rem 0;
+  background: var(--card);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: #8b949e;
+}
+code {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: var(--accent);
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem;
+  overflow-x: auto;
+  margin: 1.2rem 0;
+  line-height: 1.5;
+}
+pre code { background: none; padding: 0; font-size: 0.85em; color: var(--fg); }
+
+/* ── Tables ────────────────────────────────────────── */
+table { border-collapse: collapse; width: 100%; margin: 1.2rem 0; font-size: 0.9rem; }
+th { background: var(--surface); color: var(--accent); text-align: left; padding: 0.7rem 0.9rem; border: 1px solid var(--border); font-weight: 700; }
+td { padding: 0.6rem 0.9rem; border: 1px solid var(--border); }
+tr:nth-child(even) { background: var(--card); }
+
+/* ── TOC ───────────────────────────────────────────── */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  columns: 2;
+  column-gap: 2rem;
+}
+.toc h2 { margin-top: 0; border: none; padding: 0; column-span: all; }
+.toc a { display: block; padding: 0.2rem 0; color: var(--fg); font-size: 0.92rem; }
+.toc a:hover { color: var(--accent); }
+.toc .sub { padding-left: 1.2rem; font-size: 0.85rem; color: #7f92a7; }
+
+/* ── Cards / Callouts ──────────────────────────────── */
+.callout {
+  border: 1px solid var(--card-border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.callout.warn { border-left: 4px solid var(--warn); }
+.callout.critical { border-left: 4px solid var(--red); }
+.callout.info { border-left: 4px solid var(--accent2); }
+.callout.success { border-left: 4px solid var(--accent); }
+.callout-title {
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+.callout.warn .callout-title { color: var(--warn); }
+.callout.critical .callout-title { color: var(--red); }
+.callout.info .callout-title { color: var(--accent2); }
+.callout.success .callout-title { color: var(--accent); }
+
+/* ── Metric Grid ───────────────────────────────────── */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: center;
+}
+.metric-card .value { font-size: 1.8rem; font-weight: 900; color: var(--accent); line-height: 1; }
+.metric-card .label { font-size: 0.78rem; color: #7f92a7; margin-top: 0.3rem; }
+
+/* ── Architecture Diagram ──────────────────────────── */
+.arch-diagram {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  font-family: 'Cascadia Code', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  color: var(--fg);
+  white-space: pre;
+}
+
+/* ── Sidebar Nav (reading progress) ────────────────── */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  z-index: 1000;
+  transition: width 0.1s;
+}
+
+/* ── Back to Top ───────────────────────────────────── */
+.back-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 999;
+  box-shadow: 0 4px 16px rgba(80,214,180,0.3);
+}
+.back-top.visible { opacity: 1; }
+
+/* ── Print / Responsive ────────────────────────────── */
+@media (max-width: 768px) {
+  body { font-size: 15px; }
+  .page { padding: 1.5rem 1rem 3rem; }
+  .hero h1 { font-size: 2rem; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  table { font-size: 0.8rem; }
+  pre { font-size: 0.78rem; }
+  .toc { columns: 1; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+}
+@media print {
+  body { background: #fff; color: #222; }
+  .progress-bar, .back-top { display: none; }
+  .page { max-width: 100%; padding: 0; }
+  h1, h2, h3 { color: #111; }
+  a { color: #1a5fb4; }
+  table, th, td { border-color: #ccc; }
+  .callout { border-color: #ccc; background: #f8f8f8; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<a href="#top" class="back-top" id="backTop" title="Back to top">↑</a>
+
+<div class="page" id="top">
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="logo">A</div>
+  <h1 style="border:none; margin:0; padding:0;">The Architect</h1>
+  <div class="subtitle">Civilization Operating Protocol</div>
+  <p class="meta">
+    Transparent Governance · Universal Sector Accountability · AI Safety · Human Purpose<br>
+    <strong>Version 2.1</strong> · May 2026 · QubitDev Foundation<br>
+    CC BY-SA 4.0 International
+  </p>
+  <div class="abstract">
+    <p>The Architect is a comprehensive governance, economic, legal, and industrial accountability framework designed to digitize public institutions, eliminate financial corruption through radical transparency, secure AI through deep prompt inspection, and align every high-impact industry toward human dignity, living systems, peace, and long-term evolution.</p>
+    <p>The framework operates across five layered systems — <strong>GovLedger</strong>, <strong>GovOS</strong>, <strong>WorkOS</strong>, <strong>LexGlobal</strong>, and <strong>HumanityOS</strong> — plus a <strong>Universal Sector Compact</strong> for all industries and a production-grade <strong>Enterprise Governance Module</strong> with Lobster Trap AI security and Gemini-powered analysis.</p>
+    <p>The Architect is not a world government. It is a federated, opt-in protocol that any sovereign nation, city, institution, or enterprise can adopt, adapt, or leave with full data portability. The goal is not utopia. It is a <strong>measurably better default</strong> than the current fragmented, opaque, and inequitable operating system of civilization.</p>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<nav class="toc" id="toc">
+  <h2 style="column-span: all;">Table of Contents</h2>
+
+  <a href="#s1">1. Problem Statement</a>
+  <a href="#s2">2. Vision and Founding Principles</a>
+  <a href="#s3">3. System Architecture</a>
+  <a class="sub" href="#s3-1">3.1 GovLedger — Financial Transparency</a>
+  <a class="sub" href="#s3-2">3.2 GovOS — Digital Governance</a>
+  <a class="sub" href="#s3-3">3.3 WorkOS — AI Labor, Automation Tax, UBI</a>
+  <a class="sub" href="#s3-4">3.4 LexGlobal — Machine-Readable Law</a>
+  <a class="sub" href="#s3-5">3.5 HumanityOS — Purpose Infrastructure</a>
+  <a href="#s4">4. Governing Rules and Constitution</a>
+  <a href="#s5">5. Current State Analysis</a>
+  <a href="#s6">6. Operational Mechanics</a>
+  <a href="#s7">7. User Journeys</a>
+  <a href="#s8">8. Scope Definition</a>
+  <a class="sub" href="#s8-4">8.4 Lobster Trap AI Security Layer</a>
+  <a class="sub" href="#s8-5">8.5 Universal Sector Compact</a>
+  <a href="#s9">9. Achievable Outcomes</a>
+  <a href="#s10">10. Risks and Hard Criticisms</a>
+  <a href="#s11">11. Mitigation Strategies</a>
+  <a href="#s12">12. Conclusion and Call to Action</a>
+  <a href="#s13">13. Enterprise Governance Module (v4.0)</a>
+  <a class="sub" href="#s13-tech">13.7 Technical Stack and Implementation</a>
+  <a href="#s14">14. Quantum Integration Layer</a>
+  <a href="#s15">15. References</a>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 1. PROBLEM STATEMENT -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s1">1. Problem Statement</h1>
+
+<p>Human civilization in 2026 operates on governance, economic, and legal systems designed for the 18th–20th centuries. These systems are failing at scale.</p>
+
+<h2>1.1 Financial Corruption and Opacity</h2>
+
+<p>The World Bank estimates that <strong>$2.6 trillion per year</strong> — approximately 5% of global GDP — is lost to corruption worldwide [1]. Transparency International's 2024 Corruption Perceptions Index shows that two-thirds of all countries score below 50 out of 100, indicating systemic corruption as the norm rather than the exception [2]. Government procurement alone accounts for 15–30% of GDP in most countries, and the OECD estimates that <strong>10–30% of a public contract's value is lost to corruption</strong> in procurement processes [3].</p>
+
+<p>The fundamental problem is informational: citizens cannot see where public money goes. Financial flows between institutions, contractors, and individuals are buried in disconnected databases, paper records, and classified systems. Even in advanced democracies, tracing a single euro from tax collection to final expenditure requires months of Freedom of Information requests.</p>
+
+<h2>1.2 Bureaucratic Inefficiency</h2>
+
+<p>The World Bank's Doing Business data showed that it takes an average of <strong>230 days to enforce a contract</strong> in Sub-Saharan Africa and <strong>20 separate procedures to register property</strong> in some jurisdictions [4]. Even in the European Union, regulatory compliance costs for small businesses average €30,000–€50,000 per year, with paperwork consuming 10–15% of total working time [5].</p>
+
+<h2>1.3 Wealth Inequality and Labor Distribution</h2>
+
+<p>Credit Suisse's 2024 Global Wealth Report found that the <strong>top 1% of adults hold 45.8% of global wealth</strong>, while the bottom 50% hold just 1.1% [6]. Labour productivity in OECD nations has grown by approximately <strong>1,200% since 1950</strong> [7], yet average working hours have barely declined. The productivity gains have been captured almost entirely by capital owners rather than distributed to workers in the form of reduced hours or proportionally higher wages.</p>
+
+<h2>1.4 Legal Fragmentation</h2>
+
+<p>There are approximately <strong>195 sovereign nations</strong>, each with its own legal system, often with thousands of sub-jurisdictions. The total body of enforceable law worldwide is estimated at <strong>50–100 million distinct legal provisions</strong> [9]. Cross-border disputes consume years and millions in legal fees.</p>
+
+<h2>1.5 Environmental Collapse</h2>
+
+<p>The IPCC Sixth Assessment Report concludes that the <strong>1.5°C warming threshold will likely be breached before 2030</strong> under all modeled scenarios [10]. Despite 30 years of climate conferences, global CO₂ emissions reached a record 37.4 billion tonnes in 2024 [11].</p>
+
+<h2>1.6 The Meta-Problem</h2>
+
+<div class="callout critical">
+  <div class="callout-title">Root Cause</div>
+  <p>These five crises — corruption, bureaucratic waste, inequality, legal fragmentation, and environmental collapse — share a root cause: <strong>humanity's governance systems were designed for a world of isolated communities with limited communication, and they have not been upgraded for a connected, automated, global civilization</strong>. The Architect is the upgrade.</p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 2. VISION AND FOUNDING PRINCIPLES -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s2">2. Vision and Founding Principles</h1>
+
+<h2>2.1 Vision</h2>
+
+<p>A world where every public transaction is visible, every law is accessible, every citizen has material security regardless of employment, work is optional rather than coerced, and human energy is directed toward creativity, exploration, caregiving, and meaning rather than survival.</p>
+
+<h2>2.2 What The Architect Is</h2>
+
+<ul>
+  <li>A <strong>federated protocol</strong>, not a world government</li>
+  <li>An <strong>opt-in framework</strong> that any nation can adopt, adapt, or leave</li>
+  <li>A <strong>set of interoperable standards</strong> for governance, finance, identity, and law</li>
+  <li>A <strong>constitutional floor</strong> of universal human rights below which no participating nation may fall</li>
+  <li>A <strong>living document</strong> with built-in sunset clauses and democratic amendment procedures</li>
+</ul>
+
+<h2>2.3 What The Architect Is NOT</h2>
+
+<ul>
+  <li>Not a surveillance state — privacy is a founding principle; transparency applies to <strong>institutions</strong>, not individuals</li>
+  <li>Not cultural imperialism — cultural variation is explicitly protected above the human rights floor</li>
+  <li>Not a tech solutionist fantasy — technology is the enabler, but governance and social design are the core</li>
+  <li>Not dependent on any single technology (not "blockchain", not "AI") — technology-agnostic standards</li>
+  <li>Not a replacement for national sovereignty — nations retain sovereignty and may secede at any time</li>
+</ul>
+
+<h2>2.4 Seven Founding Principles</h2>
+
+<div class="callout success">
+  <div class="callout-title">Constitutional Principles</div>
+  <ol>
+    <li><strong>Radical Institutional Transparency</strong> — Every public institution's financial flows, decisions, and contracts must be auditable in real-time by any person on Earth.</li>
+    <li><strong>Merit-Based Governance</strong> — Public positions filled by verifiable competence, not patronage or wealth.</li>
+    <li><strong>Liquid Democracy</strong> — Citizens vote directly or delegate per domain; delegation is revocable at any time [12].</li>
+    <li><strong>Human Dignity</strong> — Every person is entitled to material security sufficient for a dignified life regardless of employment status.</li>
+    <li><strong>AI Servitude</strong> — AI systems exist to serve human needs. No AI may hold office, own property, or make irreversible decisions without oversight.</li>
+    <li><strong>Environmental Stewardship</strong> — The biosphere is the non-negotiable foundation. Environmental costs must be internalized into every transaction.</li>
+    <li><strong>Universal Access</strong> — The Architect must be accessible to every person regardless of disability, language, literacy, connectivity, or economic status.</li>
+  </ol>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 3. SYSTEM ARCHITECTURE -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s3">3. System Architecture</h1>
+
+<p>The Architect operates as five layered systems, each building on the previous one. No layer is deployed until its predecessor has proven stable in pilot nations.</p>
+
+<div class="arch-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│                    THE ARCHITECT — LAYER STACK                  │
+├─────────────────────────────────────────────────────────────────┤
+│  Layer 5: HumanityOS — Purpose, exploration, meaning            │
+│  Layer 4: LexGlobal  — Machine-readable law, cross-border law   │
+│  Layer 3: WorkOS     — AI labor classification, automation tax,  │
+│                        UBI distribution, Civic Mission Service   │
+│  Layer 2: GovOS      — Digital identity, compliance engine,      │
+│                        merit-based appointment, liquid democracy  │
+│  Layer 1: GovLedger  — Real-time public finance transparency,    │
+│                        smart contract procurement, anomaly AI     │
+├─────────────────────────────────────────────────────────────────┤
+│  Foundation: Constitution + Universal Sector Compact             │
+│  Security:  Lobster Trap DPI + RBAC + SHA-256 Audit Chain        │
+│  Enterprise: Multi-tenant SaaS with Gemini AI governance agent   │
+└─────────────────────────────────────────────────────────────────┘</div>
+
+<h2 id="s3-1">3.1 Layer 1: GovLedger — Financial Transparency</h2>
+
+<p><strong>Purpose:</strong> Make every public financial transaction visible in real-time, like a blockchain explorer for government money.</p>
+
+<h3>Core Functions</h3>
+<ul>
+  <li><strong>Transaction Recording:</strong> Every government financial flow — procurement, salaries, subsidies, grants, contracts, foreign aid — is recorded with sender, receiver, amount, purpose, timestamp, and authorizing officer.</li>
+  <li><strong>Smart Contract Procurement:</strong> All government contracts above a threshold are encoded as smart contracts with milestone-based fund release.</li>
+  <li><strong>Privacy Tiers:</strong> Tier 1 (full transparency for institutions), Tier 2 (pseudonymized for citizen services via zero-knowledge proofs), Tier 3 (classified with mandatory declassification after 25–50 years).</li>
+  <li><strong>Anomaly Detection:</strong> AI agents continuously scan for unusual patterns, shell company chains, circular payments, no-bid contracts, and statistically improbable transaction clusters. Flags are public.</li>
+  <li><strong>Multi-Jurisdictional Federation:</strong> Each nation operates its own GovLedger node. Cross-border transactions use a federated layer with exchange rate normalization.</li>
+</ul>
+
+<div class="callout info">
+  <div class="callout-title">Precedent</div>
+  <p>Ukraine's Prozorro e-procurement system saved an estimated <strong>$6 billion in its first 3 years</strong> by making government procurement transparent and competitive [13]. Estonia's X-Road connects all government agencies with full audit trails for 1.3 million citizens [14].</p>
+</div>
+
+<h2 id="s3-2">3.2 Layer 2: GovOS — Digital Governance</h2>
+
+<p><strong>Purpose:</strong> Eliminate paper bureaucracy, automate legal compliance, enable instant citizen-government communication, and ensure competent public service through verifiable credentials.</p>
+
+<h3>Core Functions</h3>
+<ul>
+  <li><strong>Universal Digital Identity:</strong> Self-sovereign digital identity based on W3C DID standards [15] — the citizen owns and controls their identity.</li>
+  <li><strong>Automated Legal Compliance Engine:</strong> All regulations encoded as machine-readable rules. Starting a business returns all requirements instantly.</li>
+  <li><strong>Merit-Based Appointment System:</strong> Public positions require verifiable credentials with AI-scored, publicly visible evaluations.</li>
+  <li><strong>Liquid Democracy Platform:</strong> Direct voting or revocable delegation per policy domain. Supermajority for constitutional changes.</li>
+  <li><strong>Automated Dispute Resolution:</strong> AI arbitration for small claims with transparent reasoning. Free first-level appeals.</li>
+</ul>
+
+<div class="callout info">
+  <div class="callout-title">Precedent</div>
+  <p>Estonia's e-Governance delivers <strong>99% of government services digitally</strong>. Citizens file taxes in 3 minutes. The system saves an estimated 820 years of working time per year for 1.3 million people [14].</p>
+</div>
+
+<h2 id="s3-3">3.3 Layer 3: WorkOS — AI Labor, Automation Tax, and UBI</h2>
+
+<p><strong>Purpose:</strong> Create the legal and economic framework for AI and robots to perform hard, dangerous, and repetitive labor, while guaranteeing every person material security through Universal Basic Income funded by an automation tax.</p>
+
+<h3>Robot/AI Legal Classification</h3>
+
+<table>
+  <thead><tr><th>Class</th><th>Autonomy</th><th>Liability</th><th>Requirements</th><th>Examples</th></tr></thead>
+  <tbody>
+    <tr><td><strong>T (Tool)</strong></td><td>None</td><td>100% operator</td><td>Standard insurance</td><td>Industrial robots, data entry AI</td></tr>
+    <tr><td><strong>A (Agent)</strong></td><td>Semi, bounded</td><td>Shared (operator + org)</td><td>Dedicated insurance, kill switch, incident log</td><td>Delivery drones, customer service AI</td></tr>
+    <tr><td><strong>S (Autonomous)</strong></td><td>Full, domain-scoped</td><td>Organization primary</td><td>Insurance bond, 24/7 monitoring, quarterly audit</td><td>Autonomous factories, AI judges (advisory)</td></tr>
+  </tbody>
+</table>
+
+<h3>Automation Tax</h3>
+<ul>
+  <li>Companies pay a tax proportional to <strong>displaced labor value</strong> (initially 20%, democratically adjustable)</li>
+  <li>Dynamic rate adjustment based on employment levels, UBI needs, and GDP growth</li>
+  <li>Small business exemption for first 5 years of automation adoption</li>
+  <li>Proceeds flow directly into the UBI pool</li>
+</ul>
+
+<h3>Universal Basic Income</h3>
+<ul>
+  <li><strong>$1,000–$2,000/month</strong> adjusted by local purchasing power parity</li>
+  <li>Funding: automation tax + carbon tax + financial transaction tax (0.1%) + GovOS efficiency savings</li>
+  <li>Evidence base: Finland pilot showed improved wellbeing [20]; Iran partial UBI sustained at national scale [21]; largest US study showed small labor reduction [18]</li>
+</ul>
+
+<h2 id="s3-4">3.4 Layer 4: LexGlobal — Machine-Readable Law</h2>
+
+<p><strong>Purpose:</strong> Algorithmically harmonize legal systems, enable cross-border dispute resolution in weeks instead of years, and make every law accessible to every person in their language.</p>
+
+<h2 id="s3-5">3.5 Layer 5: HumanityOS — Purpose Infrastructure</h2>
+
+<p><strong>Purpose:</strong> Ensure that when automation liberates humans from survival labor, structured meaning-making systems exist: Civic Mission Service, creative grants, citizen science, space exploration, environmental restoration, and governance participation.</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 4. GOVERNING RULES AND CONSTITUTION -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s4">4. Governing Rules and Constitution</h1>
+
+<h2>4.1 Governance Structure</h2>
+<ul>
+  <li><strong>The Architect Council</strong> — One seat per participating nation, rotating chair, supermajority for key decisions</li>
+  <li><strong>AI Oversight Board</strong> — Technologists, ethicists, civil society with veto power on AI deployment affecting rights</li>
+  <li><strong>Judicial Panel</strong> — International judges for constitutional interpretation and cross-border disputes</li>
+  <li><strong>Citizen Assembly</strong> — Randomly selected citizens (sortition) for policy review and democratic input</li>
+</ul>
+
+<h2>4.2 Constitutional Floor</h2>
+<p>The following rights cannot be overridden by any participating nation, democratic vote, or emergency power: right to life and physical integrity; freedom from torture and slavery; right to fair trial; privacy of personal data; freedom of thought, conscience, and expression; right to material security (UBI); right to education and healthcare; right to leave any participating jurisdiction with full data portability.</p>
+
+<h2>4.3 Anti-Corruption for the Anti-Corruption System</h2>
+
+<div class="callout warn">
+  <div class="callout-title">Triple Audit Architecture</div>
+  <ol>
+    <li><strong>AI Audit:</strong> Automated anomaly detection comparing actions against rules</li>
+    <li><strong>Independent Human Audit:</strong> Rotating international teams (never the same team twice)</li>
+    <li><strong>Public Audit:</strong> All records accessible to any citizen; journalists, NGOs, and citizens can file audit challenges</li>
+  </ol>
+  <p>Rotating personnel (4-year max), financial transparency for all officials, whistleblower cryptographic protection with financial reward (percentage of recovered funds).</p>
+</div>
+
+<h2>4.4 Sunset Clauses and Living Law</h2>
+<p>Every rule expires after <strong>10 years</strong> unless actively renewed by Council vote with effectiveness review. Constitutional Layer (human rights floor) is permanent.</p>
+
+<h2>4.5 Secession and Data Portability</h2>
+<p>Any nation may leave at any time with 12-month notice. Full data export in open formats. No sanctions for withdrawal. The door remains open.</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 5. CURRENT STATE ANALYSIS -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s5">5. Current State Analysis</h1>
+
+<h2>5.1 What Already Exists</h2>
+
+<table>
+  <thead><tr><th>Component</th><th>Existing System</th><th>Scale</th><th>Limitation</th></tr></thead>
+  <tbody>
+    <tr><td>Financial transparency</td><td>Ukraine's Prozorro</td><td>44M people</td><td>Procurement only, not all gov finances</td></tr>
+    <tr><td>Digital governance</td><td>Estonia's X-Road + e-Residency</td><td>1.3M people</td><td>Small nation, not tested at scale</td></tr>
+    <tr><td>Digital identity</td><td>India's Aadhaar</td><td>1.4B people</td><td>Centralized, privacy concerns</td></tr>
+    <tr><td>Liquid democracy</td><td>Germany's LiquidFeedback</td><td>~30K users</td><td>Never scaled to national governance</td></tr>
+    <tr><td>UBI pilot</td><td>Finland (2017–2018)</td><td>2,000 recipients</td><td>Too small, too short for conclusions</td></tr>
+    <tr><td>UBI at scale</td><td>Iran cash transfer (2011–present)</td><td>~80M people</td><td>Partial amount, didn't eliminate poverty</td></tr>
+    <tr><td>Legal harmonization</td><td>EU acquis communautaire</td><td>27 nations</td><td>70 years, still incomplete</td></tr>
+    <tr><td>AI regulation</td><td>EU AI Act (2024)</td><td>27 nations</td><td>Risk-based framework, not operational</td></tr>
+    <tr><td>Environmental monitoring</td><td>EU Copernicus program</td><td>Global</td><td>Monitoring only, no enforcement</td></tr>
+  </tbody>
+</table>
+
+<h2>5.2 Gap Analysis</h2>
+<p>The Architect bridges these gaps by: (1) defining interoperability standards (TCP/IP for governance), (2) making transparency the default, (3) reversing the identity power dynamic through self-sovereign identity, (4) funding UBI through automation tax, (5) harmonizing law algorithmically using AI, (6) integrating environmental enforcement directly into the financial system.</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 6. OPERATIONAL MECHANICS -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s6">6. Operational Mechanics — Phased Deployment</h1>
+
+<h2>Phase 1: GovLedger Pilot (Years 1–5)</h2>
+<p><strong>Entry Criteria:</strong> Coalition of minimum 3 willing nations (candidates: Estonia, Singapore, Uruguay, Rwanda, South Korea, New Zealand, Denmark).</p>
+<p><strong>Actions:</strong> Deploy GovLedger in pilot nations; establish Council; deploy anomaly detection AI; build API standard; run independent evaluation.</p>
+<p><strong>Success Metrics:</strong> ≥90% transactions on-ledger; ≥50% procurement corruption reduction; citizen trust +20 points; zero ledger integrity compromises.</p>
+<p><strong>Rollback Condition:</strong> If corruption increases, trust decreases, or system is compromised within 3 years — suspend for redesign.</p>
+
+<h2>Phase 2: GovOS Expansion (Years 3–10)</h2>
+<p>Deploy digital identity, compliance engine, merit-based appointment, liquid democracy. Target: 80%+ services digitized.</p>
+
+<h2>Phase 3: WorkOS Integration (Years 5–15)</h2>
+<p>AI/robot legal classification, automation tax, UBI pilot in founding nations, Civic Mission Service launch.</p>
+
+<h2>Phase 4: LexGlobal (Years 10–25)</h2>
+<p>Machine-readable law harmonization, cross-border dispute resolution, AI-assisted legal analysis.</p>
+
+<h2>Phase 5: HumanityOS (Years 15–50)</h2>
+<p>Purpose infrastructure, work hour reduction, space governance, post-scarcity preparation.</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 7. USER JOURNEYS -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s7">7. User Journeys</h1>
+
+<h2>7.1 Citizen</h2>
+<p><strong>Anika, 34, teacher.</strong> She opens her phone, sees the full public budget of her city — every contract, every salary, every expenditure. She traces her tax payment from collection to the school construction project. She votes directly on the education budget and delegates her healthcare vote to a doctor she trusts.</p>
+
+<h2>7.2 Public Official</h2>
+<p><strong>Director Mensah, 52, head of municipal development.</strong> Every transaction in his department is logged on GovLedger in real-time. His performance evaluation is AI-scored: budget efficiency, project completion, citizen satisfaction. The scores are public.</p>
+
+<h2>7.3 Business Owner</h2>
+<p><strong>Fatima, 28, starting a solar company.</strong> She enters "I want to start a solar panel installation business." The compliance engine instantly returns all requirements. Her company is legally formed within 24 hours. She wins a government contract through GovLedger — transparent terms, milestone-based automatic payment.</p>
+
+<h2>7.4 Whistleblower</h2>
+<p>A public servant discovers €3 million diverted from school construction. They upload evidence through the anonymous reporting channel. The AI had already flagged it. The investigation is accelerated. The whistleblower is cryptographically protected and receives 5% of recovered funds.</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 8. SCOPE DEFINITION -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s8">8. Scope Definition</h1>
+
+<h2 id="s8-4">8.4 Lobster Trap AI Security Layer</h2>
+
+<p>All governance AI interactions require a security layer before they can affect rights, money, public services, legal advice, procurement, audits, or infrastructure. The Architect integrates <strong>Lobster Trap</strong>, an open-source deep prompt inspection proxy, wherever AI systems process citizen or institutional requests.</p>
+
+<p>Lobster Trap inspects prompts <strong>before</strong> they reach the model and inspects model outputs <strong>before</strong> they reach a person or automated workflow. Rules detect prompt injection, impersonation, credential leakage, PII exposure, unauthorized tool calls, exfiltration attempts, fabricated citations, unsafe instructions, and policy mismatches.</p>
+
+<div class="callout success">
+  <div class="callout-title">DPI Actions (P4-style first-match-wins)</div>
+  <p><code>ALLOW</code> → <code>LOG</code> → <code>RATE_LIMIT</code> → <code>HUMAN_REVIEW</code> → <code>QUARANTINE</code> → <code>DENY</code></p>
+  <p>This converts AI safety from a trust assumption into an <strong>auditable control surface</strong>: every high-risk AI interaction is logged, appealable, independently reviewable, and tied to The Architect's Transparency Authority.</p>
+</div>
+
+<h2 id="s8-5">8.5 Universal Sector Compact</h2>
+
+<p>The Universal Sector Compact requires high-impact sectors to report what they previously externalized: labor harms, supply-chain abuse, emissions, water use, pollution, animal suffering, biodiversity loss, tax avoidance, community displacement, and conflict financing. The goal is to make good enterprise visible, financeable, and trusted.</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 9. ACHIEVABLE OUTCOMES -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s9">9. Achievable Outcomes</h1>
+
+<h2>9.1 Short-Term (5 Years)</h2>
+
+<div class="metrics">
+  <div class="metric-card"><div class="value">50–70%</div><div class="label">Procurement corruption reduction</div></div>
+  <div class="metric-card"><div class="value">80%+</div><div class="label">Services digitized</div></div>
+  <div class="metric-card"><div class="value">&lt;5 min</div><div class="label">Tax filing time</div></div>
+  <div class="metric-card"><div class="value">90%</div><div class="label">Contract processing reduction</div></div>
+  <div class="metric-card"><div class="value">+20 pts</div><div class="label">Citizen trust increase</div></div>
+</div>
+
+<h2>9.2 Medium-Term (10–20 Years)</h2>
+
+<div class="metrics">
+  <div class="metric-card"><div class="value">&lt;5%</div><div class="label">Poverty rate</div></div>
+  <div class="metric-card"><div class="value">4h→3h</div><div class="label">Workday</div></div>
+  <div class="metric-card"><div class="value">$1–2K</div><div class="label">Monthly UBI (PPP)</div></div>
+  <div class="metric-card"><div class="value">60%</div><div class="label">Faster cross-border disputes</div></div>
+  <div class="metric-card"><div class="value">30–50%</div><div class="label">Emissions reduction</div></div>
+</div>
+
+<h2>9.3 What We Cannot Guarantee</h2>
+<div class="callout warn">
+  <div class="callout-title">Honest Limitations</div>
+  <ul>
+    <li><strong>AGI timeline is unpredictable.</strong> If it arrives 2035, Phase 5 accelerates. If not by 2060, HumanityOS is delayed but not impossible.</li>
+    <li><strong>Energy breakthrough is not certain.</strong> Solar + wind + fission can get 70% there; fusion would get 100%.</li>
+    <li><strong>Human nature is variable.</strong> Not everyone will use leisure time productively. Purpose Infrastructure helps but cannot guarantee universal flourishing.</li>
+    <li><strong>Political will is the binding constraint.</strong> Every technical challenge is solvable. The question is whether enough nations will choose to participate.</li>
+  </ul>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 10. RISKS AND HARD CRITICISMS -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s10">10. Risks and Hard Criticisms</h1>
+
+<p>Every claim in this whitepaper must survive rigorous criticism. Here are the ten most serious objections:</p>
+
+<h2>10.1 Privacy vs. Transparency Paradox</h2>
+<p><strong>Severity: High.</strong> Making all government data public inevitably exposes some private information. India's Aadhaar has suffered multiple data breaches [34]. Estonia's "once-only" principle serves only 1.3M people — scaling privacy-preserving transparency to billions is unsolved.</p>
+
+<h2>10.2 Resistance from Power Structures</h2>
+<p><strong>Severity: Critical.</strong> The single most likely failure mode. Ukraine's Prozorro succeeded only with massive civil society support and post-revolution political will — and Ukraine remains significantly corrupt despite the system [35].</p>
+
+<h2>10.3 Cultural Imperialism</h2>
+<p><strong>Severity: High.</strong> A "universal" system inevitably encodes its creators' values. The EU AI Act has been criticized as imposing European values globally [36]. The UDHR itself has been challenged as culturally biased [37].</p>
+
+<h2>10.4 Digital Divide</h2>
+<p><strong>Severity: High.</strong> 2.7 billion people lack internet access [38]. India's Aadhaar-linked welfare led to documented starvation deaths from biometric failures [39].</p>
+
+<h2>10.5 UBI Economics Are Uncertain</h2>
+<p><strong>Severity: Medium-High.</strong> The largest US study found non-trivial labor reduction (-2%) and income substitution [18]. No country has tested full UBI at The Architect's proposed levels.</p>
+
+<h2>10.6 Sovereignty Conflicts</h2>
+<p><strong>Severity: Critical.</strong> Brexit demonstrated that even partial legal harmonization can trigger withdrawal [40].</p>
+
+<h2>10.7 System-of-Systems Attack Surface</h2>
+<p><strong>Severity: Critical.</strong> The SolarWinds attack (2020) compromised 18,000 organizations through a single supply chain vulnerability [41].</p>
+
+<h2>10.8 Who Governs the Governors</h2>
+<p><strong>Severity: High.</strong> The IMF, World Bank, and WTO were designed as neutral bodies but serve their largest shareholders [42].</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 11. MITIGATION STRATEGIES -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s11">11. Mitigation Strategies</h1>
+
+<ol>
+  <li><strong>Privacy:</strong> Zero-knowledge proofs + tiered transparency. Mandatory data protection officers. Automatic penalties for breaches.</li>
+  <li><strong>Power Resistance:</strong> Economic incentives, not coercion. Start with willing nations. Let results drive adoption.</li>
+  <li><strong>Cultural Imperialism:</strong> Council must reflect global diversity structurally. Constitutional Layer derived from rights with ≥80% global recognition. Cultural adaptation designed by local communities.</li>
+  <li><strong>Digital Divide:</strong> Offline-first design. Physical service points. Universal internet as prerequisite. Accessibility testing with actual disabled, elderly, low-literacy users.</li>
+  <li><strong>UBI Sustainability:</strong> Dynamic tax rate. Multiple funding sources. Democratic vote to pause work reduction if premature.</li>
+  <li><strong>Purpose Crisis:</strong> Structured meaning infrastructure — Civic Mission Service, creative grants, citizen science, exploration programs.</li>
+  <li><strong>Sovereignty:</strong> Opt-in protocol (like TCP/IP), not authority. Any nation can leave with full data portability.</li>
+  <li><strong>Cybersecurity:</strong> Federated architecture (no single point of failure). Post-quantum cryptography. Air-gapped backups. Bug bounties exceeding black market values. Hardware kill switches.</li>
+  <li><strong>Institutional Self-Interest:</strong> Term limits (4–6yr), rotating auditors, sunset clauses, democratic override (1M signatures across 10+ nations).</li>
+  <li><strong>Transition Violence:</strong> 50-year evolutionary timeline. UBI + retraining for displaced workers. No overnight elimination of any job category.</li>
+</ol>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 12. CONCLUSION AND CALL TO ACTION -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s12">12. Conclusion and Call to Action</h1>
+
+<p>The Architect as described in this whitepaper is <strong>technically feasible today</strong>. Every component — distributed ledgers, zero-knowledge proofs, digital identity, AI anomaly detection, smart contracts, liquid democracy platforms, UBI distribution — exists in working form somewhere in the world. The engineering challenge is integration and scale, not invention.</p>
+
+<p>What makes The Architect unlikely is not technology but politics. The binding constraint is not "can we build it?" but "will enough people demand it?"</p>
+
+<h2>12.1 The First Step: Coalition of the Willing</h2>
+
+<p>The Architect begins with <strong>3–5 nations</strong> that already have reform momentum. Candidate founding nations: Estonia, Singapore, Uruguay, Rwanda, South Korea, New Zealand, Denmark.</p>
+
+<h2>12.2 What You Can Do</h2>
+<ul>
+  <li><strong>Governments:</strong> Express interest in the founding coalition.</li>
+  <li><strong>Technologists:</strong> Contribute to the open-source reference implementation.</li>
+  <li><strong>Academics:</strong> Critique this whitepaper. Every criticism that improves the design is a contribution.</li>
+  <li><strong>Citizens:</strong> Demand transparency. Support liquid democracy experiments. Advocate for UBI pilots.</li>
+  <li><strong>Organizations:</strong> Partner with pilot nations to monitor, evaluate, and report.</li>
+</ul>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 13. ENTERPRISE GOVERNANCE MODULE (v4.0) -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s13">13. Enterprise Governance Module — The Architect for Corporations (v4.0)</h1>
+
+<p>While The Architect is primarily designed for nation-state governance, its principles are directly applicable to corporate governance. This section specifies the <strong>production-grade reference implementation</strong> shipped as v4.0.0, covering multi-tenant enterprise SaaS, Lobster Trap deep prompt inspection, and Gemini AI governance analysis.</p>
+
+<h2>13.1 The Corporate Governance Crisis</h2>
+
+<p>The Sarbanes-Oxley Act of 2002 was enacted after Enron, WorldCom, and Tyco exposed catastrophic failures in corporate transparency [44]. Two decades later:</p>
+
+<ul>
+  <li><strong>Financial opacity persists:</strong> Material weaknesses in financial reporting remain widespread. Restatements peaked at 1,295 in 2005 [45].</li>
+  <li><strong>Auditor conflicts of interest:</strong> SOX restricts but does not eliminate the structural incentive for auditors to protect client relationships.</li>
+  <li><strong>Board capture:</strong> Boards dominated by mutual appointment networks — the "principal-agent conflict" [46].</li>
+  <li><strong>Whistleblower suppression:</strong> SOX §806 provides protection, but retaliation remains common [47].</li>
+  <li><strong>Executive compensation disconnection:</strong> CEO-to-worker pay ratios exceed 300:1 in the US with no consistent link to performance [48].</li>
+</ul>
+
+<p>Corporate fraud costs an estimated <strong>$4.7 trillion annually</strong> [49]. The Architect Enterprise Module addresses this through transparency automation, not additional regulation.</p>
+
+<h2>13.2 CorpLedger: Radical Financial Transparency</h2>
+
+<table>
+  <thead><tr><th>SOX Requirement</th><th>CorpLedger Improvement</th></tr></thead>
+  <tbody>
+    <tr><td>CEO/CFO certify quarterly (§302)</td><td>Real-time automated certification — financials always current</td></tr>
+    <tr><td>Annual internal controls (§404)</td><td>Continuous AI anomaly detection on every transaction</td></tr>
+    <tr><td>External auditor independence (Title II)</td><td>Cryptographic audit trail — auditors verify math, not trust</td></tr>
+    <tr><td>Whistleblower protection (§806)</td><td>Structural elimination — data is already transparent</td></tr>
+  </tbody>
+</table>
+
+<h2>13.3 Merit-Based Hierarchy</h2>
+<p>Drawing from Confucian meritocratic tradition and modern organizational psychology: blind evaluation, multi-source assessment (peer 40%, metrics 40%, 360° feedback 20%), promotion transparency on CorpLedger, and anti-dynasty clauses. Evidence base: Singapore's civil service [50]; Pendleton Civil Service Reform Act of 1883 [51].</p>
+
+<h2>13.4 Liquid Corporate Democracy</h2>
+<p>Employees hold 20% voting weight on strategic decisions through secure digital voting. Executive compensation above 50× median salary requires combined shareholder-employee vote.</p>
+
+<h2>13.5 Triple Audit Architecture</h2>
+<div class="callout success">
+  <div class="callout-title">Three Independent Audit Layers</div>
+  <ol>
+    <li><strong>AI Continuous Audit:</strong> ML monitoring of all transactions, flagging anomalies and deviations from baselines.</li>
+    <li><strong>Human External Audit:</strong> Firm selected by <strong>lottery</strong> (not chosen by the company). Mandatory rotation every 3 years.</li>
+    <li><strong>Stakeholder Audit:</strong> Employee-elected representatives with CorpLedger access and direct regulatory escalation authority.</li>
+  </ol>
+  <p>No single layer can be compromised without the other two detecting it.</p>
+</div>
+
+<h2>13.6 Implementation Path</h2>
+<ul>
+  <li><strong>Phase 1 (Year 1–2):</strong> Voluntary adoption by 10–20 founding companies. Open-source reference implementation.</li>
+  <li><strong>Phase 2 (Year 3–5):</strong> Regulatory sandbox in 2–3 jurisdictions (candidates: Estonia, Singapore, UK).</li>
+  <li><strong>Phase 3 (Year 5–10):</strong> Market adoption driven by demonstrated fraud reduction, investor confidence, and lower audit costs.</li>
+</ul>
+
+<!-- ─── 13.7 TECHNICAL STACK ─── -->
+<h2 id="s13-tech">13.7 Technical Stack and Implementation (v4.0.0)</h2>
+
+<p>The following describes the <strong>production reference implementation</strong> — deployed, tested, and operational code, not a specification document. Every component listed below is built, linted, type-checked, and verified by automated smoke tests.</p>
+
+<h3>13.7.1 Core Platform Stack</h3>
+
+<table>
+  <thead><tr><th>Component</th><th>Technology</th><th>Version</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td>Framework</td><td>Next.js (App Router)</td><td>16.2.6</td><td>Server + client rendering, API routes, ISR</td></tr>
+    <tr><td>Runtime</td><td>React</td><td>19.2.4</td><td>UI components, client-side interactivity</td></tr>
+    <tr><td>Language</td><td>TypeScript (strict)</td><td>5.x</td><td>End-to-end type safety</td></tr>
+    <tr><td>Styling</td><td>Tailwind CSS</td><td>v4</td><td>Utility-first CSS, dark-mode design system</td></tr>
+    <tr><td>Validation</td><td>Zod</td><td>4.4.3</td><td>Runtime schema validation on all API inputs</td></tr>
+    <tr><td>Icons</td><td>Lucide React</td><td>1.16+</td><td>Consistent icon system across UI</td></tr>
+    <tr><td>Build</td><td>Turbopack</td><td>integrated</td><td>Sub-3s production builds</td></tr>
+    <tr><td>CI/CD</td><td>GitHub Actions</td><td>—</td><td>Lint + build on every push/PR. CodeQL security scanning.</td></tr>
+  </tbody>
+</table>
+
+<h3>13.7.2 Security Architecture</h3>
+
+<div class="arch-diagram">
+┌──────────────────────────────────────────────────────────────┐
+│                    REQUEST FLOW                               │
+│                                                               │
+│  Client → API Route → RBAC Check → Zod Validation            │
+│                                      ↓                        │
+│                              Lobster Trap DPI                 │
+│                           (18 rules, 4 packs)                 │
+│                                      ↓                        │
+│                        ┌─────────────┴──────────────┐         │
+│                        │ ALLOW  │ LOG │ HUMAN_REVIEW │         │
+│                        │  ↓     │  ↓  │      ↓       │         │
+│                        │ Store  │ Store│   Queue      │         │
+│                        └────────┴─────┴──────────────┘         │
+│                                      ↓                        │
+│                          SHA-256 Audit Chain                  │
+│                        (tamper-evident hash chain)             │
+│                                      ↓                        │
+│                        JSON Response + Headers                │
+└──────────────────────────────────────────────────────────────┘</div>
+
+<h4>Role-Based Access Control (RBAC)</h4>
+<p>7 roles with granular permissions enforced on every API endpoint:</p>
+<table>
+  <thead><tr><th>Role</th><th>Permissions</th></tr></thead>
+  <tbody>
+    <tr><td>citizen</td><td>read:public</td></tr>
+    <tr><td>operator</td><td>read:public, write:govledger, write:impact</td></tr>
+    <tr><td>auditor</td><td>read:public, read:audit, write:review</td></tr>
+    <tr><td>sector_council</td><td>read:public, write:impact</td></tr>
+    <tr><td>transparency_authority</td><td>read:public, read:audit, export:audit</td></tr>
+    <tr><td>federation_admin</td><td>read:public, read:audit, write:jurisdiction, admin:platform</td></tr>
+    <tr><td>system</td><td>all permissions</td></tr>
+  </tbody>
+</table>
+
+<h4>SHA-256 Audit Hash Chain</h4>
+<p>Every audit event is chained: <code>SHA-256(previousHash | eventId | type | summary | timestamp)</code>. Genesis hash is a constant string. The chain is verifiable via <code>GET /api/audit/verify</code> — any tampering breaks the chain. Export proof bundles include the full chain + bundle-level SHA-256 integrity hash for regulatory submission.</p>
+
+<h3>13.7.3 Lobster Trap Policy Engine</h3>
+
+<p>The production engine implements <strong>18 DPI rules</strong> across 4 compliance-specific policy packs:</p>
+
+<table>
+  <thead><tr><th>Pack</th><th>Rules</th><th>Additional Coverage</th></tr></thead>
+  <tbody>
+    <tr><td><strong>General</strong></td><td>6 base rules</td><td>Prompt injection, credential leak, PII, exfiltration, destructive commands, fabrication</td></tr>
+    <tr><td><strong>HIPAA</strong></td><td>6 + 4 = 10</td><td>PHI detection, provider IDs, consent violations, minor patient data</td></tr>
+    <tr><td><strong>SOC 2</strong></td><td>6 + 4 = 10</td><td>Access escalation, audit tampering, encryption bypass, change management</td></tr>
+    <tr><td><strong>Finance</strong></td><td>6 + 4 = 10</td><td>High-value transactions, insider trading, AML patterns, sanctions screening</td></tr>
+  </tbody>
+</table>
+
+<h4>Rule Evaluation</h4>
+<ul>
+  <li><strong>P4-style first-match-wins</strong> — rules are evaluated in order; highest-severity action wins</li>
+  <li><strong>Bidirectional:</strong> rules can apply to <code>ingress</code> (user→agent), <code>egress</code> (agent→user), or <code>both</code></li>
+  <li><strong>Intent analysis:</strong> Detected intent (summarization, analysis, generation, retrieval, deletion, modification, transmission) is compared against declared intent. Mismatch escalates to <code>HUMAN_REVIEW</code></li>
+  <li><strong>Entity extraction:</strong> Emails, URLs, IP addresses extracted and logged as structured metadata</li>
+  <li><strong>PII / credential / exfiltration flags:</strong> Boolean indicators in every inspection result</li>
+  <li><strong>YAML export:</strong> Every policy pack exports as Veea Lobster Trap-compatible YAML for deployment to the actual DPI proxy binary</li>
+</ul>
+
+<h4>Inspection Metadata (Lobster Trap _lobstertrap block)</h4>
+<pre><code>{
+  "lobsterTrapMeta": {
+    "declaredIntent": "summarization",
+    "detectedIntent": "deletion",
+    "intentMatch": false,
+    "extractedEntities": ["email:admin@corp.com", "ip:10.0.0.1"],
+    "piiDetected": true,
+    "credentialsDetected": false,
+    "exfiltrationRisk": true
+  }
+}</code></pre>
+
+<h3>13.7.4 Gemini AI Governance Agent</h3>
+
+<p>The AI governance agent uses <strong>Google Gemini</strong> for intelligent analysis of enterprise data. Every request is DPI-inspected before reaching Gemini (ingress) and after receiving the response (egress).</p>
+
+<table>
+  <thead><tr><th>Task Type</th><th>Purpose</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><code>analyze_spending</code></td><td>Detect anomalies in procurement and spending patterns</td><td>Counterparty concentration, timing anomalies, classification gaps</td></tr>
+    <tr><td><code>compliance_check</code></td><td>Verify compliance against active policy pack</td><td>Violations, gaps, exceeding areas, regulatory citations</td></tr>
+    <tr><td><code>risk_assessment</code></td><td>Multi-dimensional risk scoring</td><td>Financial, operational, security, compliance risk with mitigations</td></tr>
+    <tr><td><code>document_review</code></td><td>Extract governance implications from documents</td><td>Obligations, deadlines, compliance requirements, risk factors</td></tr>
+    <tr><td><code>anomaly_detection</code></td><td>Statistical and temporal anomaly identification</td><td>Outliers, pattern deviations, data integrity issues</td></tr>
+    <tr><td><code>policy_recommendation</code></td><td>Recommend policy improvements</td><td>New rules, relaxations, tighter controls with justification</td></tr>
+  </tbody>
+</table>
+
+<h4>Agent Result Structure</h4>
+<pre><code>{
+  "summary": "Compliance verification completed...",
+  "findings": [
+    {
+      "category": "Data Retention",
+      "severity": "critical",
+      "description": "Audit events lack cryptographic timestamps...",
+      "evidence": "Audit chain analysis — hashes present but no TSA",
+      "remediation": "Integrate Trusted Timestamping Authority"
+    }
+  ],
+  "riskLevel": "high",
+  "recommendations": ["Priority 1: Implement RFC 3161 TSA..."],
+  "confidence": 0.92,
+  "model": "gemini-2.0-flash",
+  "tokensUsed": 1832
+}</code></pre>
+
+<div class="callout info">
+  <div class="callout-title">Demo Mode</div>
+  <p>When <code>GEMINI_API_KEY</code> is not set, the agent runs in demo mode with deterministic, realistic mock responses that showcase the full analysis pipeline. This enables evaluation without API credentials.</p>
+</div>
+
+<h3>13.7.5 Multi-Tenant Enterprise System</h3>
+
+<table>
+  <thead><tr><th>Tier</th><th>Agent Quota</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td>Pilot</td><td>50 tasks</td><td>Evaluation and proof-of-concept</td></tr>
+    <tr><td>Starter</td><td>200 tasks</td><td>Small teams and departments</td></tr>
+    <tr><td>Professional</td><td>1,000 tasks</td><td>Mid-size organizations</td></tr>
+    <tr><td>Enterprise</td><td>10,000 tasks</td><td>Large regulated industries</td></tr>
+  </tbody>
+</table>
+
+<ul>
+  <li><strong>API key authentication:</strong> Keys are SHA-256 hashed before storage (never plaintext). Lookup by hash for O(1) auth.</li>
+  <li><strong>Tenant isolation:</strong> Every inspection, agent task, and audit event is scoped to the enterprise ID.</li>
+  <li><strong>Compliance pack selection:</strong> HIPAA for healthcare, SOC 2 for technology, Finance for banking, General for all others.</li>
+</ul>
+
+<h3>13.7.6 API Surface (22 Routes)</h3>
+
+<table>
+  <thead><tr><th>Route</th><th>Method</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><code>/api/system</code></td><td>GET</td><td>Full system snapshot</td></tr>
+    <tr><td><code>/api/platform/health</code></td><td>GET</td><td>Deep subsystem health check</td></tr>
+    <tr><td><code>/api/platform/roadmap</code></td><td>GET</td><td>Modules and milestones</td></tr>
+    <tr><td><code>/api/auth/roles</code></td><td>GET</td><td>All roles with permissions</td></tr>
+    <tr><td><code>/api/govledger/transactions</code></td><td>GET / POST</td><td>GovLedger CRUD</td></tr>
+    <tr><td><code>/api/impact-ledger/entries</code></td><td>GET / POST</td><td>Impact Ledger CRUD</td></tr>
+    <tr><td><code>/api/security/inspect</code></td><td>POST</td><td>DPI inspection (base)</td></tr>
+    <tr><td><code>/api/jurisdictions</code></td><td>GET / POST</td><td>Jurisdiction registry</td></tr>
+    <tr><td><code>/api/reviews/[id]</code></td><td>PATCH</td><td>Review status updates</td></tr>
+    <tr><td><code>/api/audit/chain</code></td><td>GET</td><td>Full audit hash chain</td></tr>
+    <tr><td><code>/api/audit/verify</code></td><td>GET</td><td>Chain integrity verification</td></tr>
+    <tr><td><code>/api/export/bundle</code></td><td>GET</td><td>Downloadable proof bundle</td></tr>
+    <tr><td><code>/api/enterprise</code></td><td>GET / POST</td><td>Enterprise registration</td></tr>
+    <tr><td><code>/api/enterprise/[slug]</code></td><td>GET</td><td>Enterprise snapshot + metrics</td></tr>
+    <tr><td><code>/api/enterprise/[slug]/inspect</code></td><td>POST</td><td>Enterprise DPI with Lobster Trap</td></tr>
+    <tr><td><code>/api/enterprise/[slug]/agent</code></td><td>GET / POST</td><td>AI governance tasks</td></tr>
+    <tr><td><code>/api/enterprise/[slug]/policy</code></td><td>GET</td><td>Policy pack (JSON or YAML)</td></tr>
+  </tbody>
+</table>
+
+<h3>13.7.7 Testing and Verification</h3>
+
+<div class="metrics">
+  <div class="metric-card"><div class="value">36/36</div><div class="label">Smoke tests passing</div></div>
+  <div class="metric-card"><div class="value">22</div><div class="label">API routes</div></div>
+  <div class="metric-card"><div class="value">18</div><div class="label">DPI rules</div></div>
+  <div class="metric-card"><div class="value">12</div><div class="label">Modules (live)</div></div>
+  <div class="metric-card"><div class="value">7</div><div class="label">RBAC roles</div></div>
+  <div class="metric-card"><div class="value">6</div><div class="label">AI agent task types</div></div>
+</div>
+
+<p>Automated test coverage: system endpoints, RBAC enforcement (citizen blocked from all writes), GovLedger CRUD + risk scoring, Impact Ledger CRUD, DPI safe + malicious content, jurisdiction registry + duplicates, review actions + edge cases, audit chain integrity verification, export bundle with SHA-256, enterprise registration + duplication, enterprise DPI (safe + malicious), AI agent task execution, policy pack retrieval, 404 handling, and authorization enforcement.</p>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 14. QUANTUM INTEGRATION LAYER -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s14">14. Quantum Integration Layer</h1>
+
+<p>Quantum computing is not merely a faster classical computer. It introduces fundamentally new computational capabilities that address specific governance challenges. This section specifies where real quantum hardware integrates, distinguishing genuine advantages from hype.</p>
+
+<h2>14.1 Design Principle: Quantum Where It Matters</h2>
+
+<table>
+  <thead><tr><th>Domain</th><th>Quantum Advantage</th><th>Classical Alternative</th><th>Necessity</th></tr></thead>
+  <tbody>
+    <tr><td>Key distribution</td><td>QKD — information-theoretic security</td><td>Post-quantum classical crypto</td><td>Optional but stronger</td></tr>
+    <tr><td>Verifiable randomness</td><td>QRNG — provably unpredictable</td><td>Pseudorandom generators</td><td><strong>Essential</strong> for trustless systems</td></tr>
+    <tr><td>Optimization</td><td>Quantum annealing / QAOA for NP-hard allocation</td><td>Heuristic classical solvers</td><td>Advantage for large instances</td></tr>
+    <tr><td>Voting integrity</td><td>Quantum commitment for ballot secrecy</td><td>Classical commitment + ZKP</td><td>Enhanced guarantees</td></tr>
+    <tr><td>Crypto future-proofing</td><td>Post-quantum algorithms resist Shor's attack</td><td>RSA/ECC (vulnerable)</td><td><strong>Essential</strong> within 10–15 years</td></tr>
+  </tbody>
+</table>
+
+<h2>14.2 QRNG for Governance</h2>
+<p>Quantum random number generators exploit the fundamental indeterminacy of quantum measurement (Born rule) [52]. Used for: audit target selection, sortition, jury pools, regulatory inspection scheduling. Commercial QRNG devices (ID Quantique, Toshiba) already produce certified quantum randomness at gigabit/second rates — deployable today.</p>
+
+<h2>14.3 QKD for Sovereign Communications</h2>
+<p>All current public-key cryptography is vulnerable to Shor's algorithm. Estimates: 20 million noisy qubits could factor 2048-bit RSA in 8 hours [53]. BB84 protocol provides information-theoretic security [54]. QKD reserved for highest-sensitivity channels; NIST post-quantum algorithms (ML-KEM, ML-DSA, SLH-DSA) for everything else [55].</p>
+
+<h2>14.4 Post-Quantum Migration Timeline</h2>
+<ul>
+  <li><strong>2026–2028:</strong> All new deployments use NIST post-quantum algorithms in hybrid mode</li>
+  <li><strong>2028–2030:</strong> Classical-only signatures deprecated in GovLedger</li>
+  <li><strong>2030–2035:</strong> Full post-quantum default. QKD for highest-sensitivity channels.</li>
+</ul>
+
+<h2>14.5 What Quantum Cannot Do</h2>
+<div class="callout warn">
+  <div class="callout-title">Intellectual Honesty</div>
+  <ul>
+    <li><strong>Political will:</strong> No quantum computer can make a corrupt government choose transparency.</li>
+    <li><strong>Social trust:</strong> Quantum crypto secures channels but cannot create interpersonal trust.</li>
+    <li><strong>NP-complete problems:</strong> BQP ≠ NP is the consensus conjecture [60].</li>
+    <li><strong>AGI:</strong> Quantum ML shows some promise but no proven practical advantage over classical ML [61].</li>
+    <li><strong>Perfect security:</strong> Quantum crypto has its own implementation vulnerabilities [62].</li>
+  </ul>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- 15. REFERENCES -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<h1 id="s15">15. References</h1>
+
+<ol class="references" style="font-size: 0.85rem; line-height: 1.65; color: #8b949e;">
+  <li>World Bank. "Combating Corruption." worldbank.org/en/topic/governance/brief/anti-corruption</li>
+  <li>Transparency International. "Corruption Perceptions Index 2024." transparency.org/cpi2024</li>
+  <li>OECD. "Preventing Corruption in Public Procurement." oecd.org/gov/ethics/corruption-public-procurement</li>
+  <li>World Bank. "Doing Business 2020." worldbank.org/en/programs/doing-business (archived)</li>
+  <li>European Commission. "Regulatory Fitness and Performance Programme (REFIT)." ec.europa.eu</li>
+  <li>Credit Suisse Research Institute. "Global Wealth Report 2024." credit-suisse.com</li>
+  <li>OECD. "Labour Productivity Levels." stats.oecd.org</li>
+  <li>U.S. Bureau of Labor Statistics. "Average Hours Per Week." bls.gov/cps</li>
+  <li>Estimate based on ~195 nations averaging 100,000–500,000 regulatory provisions each.</li>
+  <li>IPCC. "Sixth Assessment Report: Climate Change 2023." ipcc.ch/assessment-report/ar6</li>
+  <li>Global Carbon Project. "Global Carbon Budget 2024." globalcarbonproject.org</li>
+  <li>Ford, Bryan. "Delegative Democracy." 2002. brynosaurus.com/deleg/deleg.pdf</li>
+  <li>Prozorro. "Transparency and Savings in Public Procurement." prozorro.gov.ua; World Bank evaluation 2019.</li>
+  <li>e-Estonia. "We have built a digital society." e-estonia.com</li>
+  <li>W3C. "Decentralized Identifiers (DIDs) v1.0." w3.org/TR/did-core</li>
+  <li>Keynes, J.M. "Economic Possibilities for our Grandchildren." 1930.</li>
+  <li>Graeber, David. "Bullshit Jobs: A Theory." Simon &amp; Schuster, 2018.</li>
+  <li>OpenResearch. "Cash Transfer Study: Final Results." 2024. openresearch.org</li>
+  <li>American Enterprise Institute. "Meta-Analysis of UBI Programs." 2026.</li>
+  <li>Kangas, O. et al. "Basic Income Experiment Finland: Preliminary Results." Ministry of Social Affairs, 2019.</li>
+  <li>Salehi-Isfahani &amp; Mostafavi-Dehzooei. "Cash transfers and labor supply in Iran." J. Development Economics, 2018.</li>
+  <li>Craig &amp; de Búrca. "EU Law: Text, Cases, and Materials." OUP, 7th ed., 2020.</li>
+  <li>UNCITRAL. "UN Convention on Contracts for International Sale of Goods (CISG)." uncitral.un.org</li>
+  <li>Despommier, D. "The Vertical Farm." Thomas Dunne Books, 2010.</li>
+  <li>FAO. "State of Food and Agriculture 2024." fao.org</li>
+  <li>IEA. "World Energy Outlook 2024." iea.org</li>
+  <li>ICON. "3D-Printed Home Construction." iconbuild.com</li>
+  <li>Topol, E. "Deep Medicine." Basic Books, 2019.</li>
+  <li>Case &amp; Deaton. "Deaths of Despair and the Future of Capitalism." Princeton UP, 2020.</li>
+  <li>United Nations. "Universal Declaration of Human Rights." 1948.</li>
+  <li>Eurobarometer. "Trust in National Government." ec.europa.eu/eurobarometer</li>
+  <li>McKinsey Global Institute. "A Future That Works: Automation, Employment, Productivity." 2017.</li>
+  <li>NASA. "Artemis Plan: NASA's Lunar Exploration Program." 2020.</li>
+  <li>Khera, R. "Dissent on Aadhaar: Big Data Meets Big Brother." Orient BlackSwan, 2019.</li>
+  <li>Johnston, M. "Syndromes of Corruption." Cambridge UP, 2005.</li>
+  <li>Bradford, A. "The Brussels Effect." OUP, 2020.</li>
+  <li>Mutua, M. "Human Rights: A Political and Cultural Critique." UPenn Press, 2002.</li>
+  <li>ITU. "Facts and Figures: Focus on Least Developed Countries." itu.int</li>
+  <li>Drèze, J. et al. "Aadhaar and Food Security in Jharkhand." Economic &amp; Political Weekly, 2017.</li>
+  <li>Menon, A. "Brexit and British Politics." Polity Press, 2019.</li>
+  <li>CISA. "APT Compromise of Government Agencies." 2021.</li>
+  <li>Stiglitz, J. "Globalization and Its Discontents." Norton, 2002.</li>
+  <li>Lynch, M. "The Arab Uprising." PublicAffairs, 2012.</li>
+  <li>U.S. Congress. "Sarbanes-Oxley Act of 2002." Public Law 107-204.</li>
+  <li>GAO. "Financial Restatements: Public Company Trends." GAO-06-678, 2006.</li>
+  <li>OECD. "G20/OECD Principles of Corporate Governance." 2023.</li>
+  <li>Ethics &amp; Compliance Initiative. "Global Business Ethics Survey." 2021.</li>
+  <li>EPI. "CEO Pay Has Skyrocketed 1,460% Since 1978." Mishel &amp; Kandra, 2021.</li>
+  <li>ACFE. "Occupational Fraud 2024: Report to the Nations." 2024.</li>
+  <li>Quah, J. "Combating Corruption Singapore-Style." Maryland Series, 2007.</li>
+  <li>Johnson &amp; Libecap. "Federal Civil Service System and Bureaucracy." U. Chicago Press, 1994.</li>
+  <li>Herrero-Collantes &amp; Garcia-Escartin. "Quantum Random Number Generators." Rev. Mod. Phys. 89(1), 2017.</li>
+  <li>Gidney &amp; Ekerå. "How to Factor 2048-bit RSA in 8 Hours Using 20M Noisy Qubits." Quantum 5, 433, 2021.</li>
+  <li>Bennett &amp; Brassard. "Quantum Cryptography: Public Key Distribution and Coin Tossing." IEEE ICCSSP, 1984.</li>
+  <li>NIST. "Post-Quantum Cryptography Standardization." FIPS 203/204/205, 2024.</li>
+  <li>Farhi, Goldstone &amp; Gutmann. "A Quantum Approximate Optimization Algorithm." arXiv:1411.4028, 2014.</li>
+  <li>Rønnow, T.F. et al. "Defining and Detecting Quantum Speedup." Science 345(6195), 2014.</li>
+  <li>Kent, A. "Unconditionally Secure Bit Commitment." Phys. Rev. Lett. 109(13), 2012.</li>
+  <li>Pappa, A. et al. "Experimental Plug and Play Quantum Coin Flipping." Nature Comms 5, 3717, 2014.</li>
+  <li>Aaronson, S. "BQP and the Polynomial Hierarchy." ACM STOC, 2010.</li>
+  <li>Tang, E. "Quantum-Inspired Classical Algorithm for Recommendation Systems." ACM STOC, 2019.</li>
+  <li>Lydersen, L. et al. "Hacking Commercial Quantum Cryptography." Nature Photonics 4(10), 2010.</li>
+</ol>
+
+<hr>
+
+<p style="text-align: center; color: #7f92a7; font-size: 0.85rem; margin-top: 3rem;">
+  This document is licensed under <strong>Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)</strong>.<br>
+  The Architect is an open framework. Critique, contribution, and adoption are invited.<br><br>
+  <strong>QubitDev Foundation</strong> · <a href="https://quantumqub.com">quantumqub.com</a> · <a href="https://github.com/qubitpage/thearchitect">github.com/qubitpage/thearchitect</a><br>
+  v2.1 · May 2026
+</p>
+
+</div><!-- .page -->
+
+<script>
+// Reading progress bar
+const progress = document.getElementById('progress');
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progress.style.width = pct + '%';
+  backTop.classList.toggle('visible', h.scrollTop > 600);
+});
+</script>
+
+</body>
+</html>

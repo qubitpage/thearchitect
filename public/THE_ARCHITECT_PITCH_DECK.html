@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Architect - Pitch Deck</title>
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #071018; color: #f4f7fb; font-family: Inter, Aptos, Segoe UI, Arial, sans-serif; }
+  body { width: 100%; }
+  .deck { width: 13.333in; margin: 0 auto; background: #071018; }
+  .slide {
+    width: 13.333in;
+    height: 7.5in;
+    page-break-after: always;
+    break-after: page;
+    position: relative;
+    overflow: hidden;
+    padding: 0.58in 0.68in;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    isolation: isolate;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(36, 160, 255, 0.22), transparent 28%),
+      radial-gradient(circle at 82% 72%, rgba(44, 214, 168, 0.16), transparent 30%),
+      linear-gradient(135deg, #071018 0%, #0d1a24 52%, #071018 100%);
+  }
+  .slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 0.34in 0.34in;
+    mask-image: linear-gradient(90deg, rgba(0,0,0,0.9), transparent 92%);
+  }
+  .brand { display: flex; align-items: center; justify-content: space-between; gap: 0.25in; font-size: 0.14in; letter-spacing: 0.09em; text-transform: uppercase; color: #91a4b8; }
+  .brand strong { color: #ffffff; letter-spacing: 0.12em; }
+  .pill { border: 1px solid rgba(149, 183, 214, 0.35); padding: 0.07in 0.14in; border-radius: 999px; background: rgba(255,255,255,0.045); }
+  h1, h2, h3, p { margin: 0; }
+  h1 { font-size: 0.78in; line-height: 0.93; letter-spacing: -0.045em; max-width: 8.4in; }
+  h2 { font-size: 0.48in; line-height: 1.0; letter-spacing: -0.035em; max-width: 8.5in; }
+  h3 { font-size: 0.25in; line-height: 1.12; letter-spacing: -0.02em; }
+  .kicker { color: #50d6b4; font-weight: 800; text-transform: uppercase; letter-spacing: 0.11em; font-size: 0.15in; margin-bottom: 0.16in; }
+  .lead { color: #c7d4e2; font-size: 0.24in; line-height: 1.34; max-width: 7.8in; margin-top: 0.25in; }
+  .small { color: #9eb0c2; font-size: 0.145in; line-height: 1.45; }
+  .foot { display: flex; justify-content: space-between; align-items: center; color: #7f92a7; font-size: 0.12in; letter-spacing: 0.04em; }
+  .num { color: #50d6b4; font-weight: 800; }
+  .grid2 { display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 0.42in; align-items: center; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.18in; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.16in; }
+  .card { border: 1px solid rgba(151, 178, 206, 0.22); background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025)); border-radius: 0.12in; padding: 0.20in; box-shadow: 0 0.22in 0.48in rgba(0,0,0,0.22); }
+  .card.compact { padding: 0.15in; }
+  .metric { font-size: 0.42in; line-height: 0.9; font-weight: 900; letter-spacing: -0.04em; color: #ffffff; }
+  .metric span { color: #50d6b4; }
+  .label { color: #91a4b8; font-size: 0.13in; margin-top: 0.08in; line-height: 1.28; }
+  .list { display: grid; gap: 0.13in; margin-top: 0.22in; }
+  .item { display: grid; grid-template-columns: 0.22in 1fr; gap: 0.11in; color: #dce8f5; font-size: 0.17in; line-height: 1.3; }
+  .dot { width: 0.12in; height: 0.12in; border-radius: 50%; background: #50d6b4; margin-top: 0.045in; box-shadow: 0 0 0.2in rgba(80,214,180,0.55); }
+  .visual { min-height: 4.35in; border: 1px solid rgba(151,178,206,0.24); border-radius: 0.18in; background: rgba(5,13,22,0.62); position: relative; overflow: hidden; box-shadow: inset 0 0 0.6in rgba(80,214,180,0.04), 0 0.32in 0.6in rgba(0,0,0,0.25); }
+  .visual svg { width: 100%; height: 100%; display: block; }
+  .ring { position: absolute; border: 1px solid rgba(80,214,180,0.35); border-radius: 50%; }
+  .ring.r1 { width: 3.2in; height: 3.2in; left: 0.68in; top: 0.56in; }
+  .ring.r2 { width: 2.25in; height: 2.25in; left: 1.16in; top: 1.04in; border-color: rgba(48,150,255,0.35); }
+  .ring.r3 { width: 1.18in; height: 1.18in; left: 1.70in; top: 1.58in; background: radial-gradient(circle, rgba(80,214,180,0.34), rgba(48,150,255,0.08)); }
+  .node { position: absolute; width: 0.18in; height: 0.18in; border-radius: 50%; background: #50d6b4; box-shadow: 0 0 0.22in rgba(80,214,180,0.7); }
+  .node.n1 { left: 0.74in; top: 1.12in; } .node.n2 { left: 3.45in; top: 0.94in; } .node.n3 { left: 2.92in; top: 3.22in; } .node.n4 { left: 1.12in; top: 3.48in; }
+  .quote { font-size: 0.35in; line-height: 1.13; letter-spacing: -0.035em; color: #ffffff; max-width: 9.5in; }
+  .source { margin-top: 0.18in; color: #91a4b8; font-size: 0.14in; }
+  .layer-stack { display: grid; gap: 0.105in; }
+  .layer { display: grid; grid-template-columns: 1.12in 1fr; gap: 0.14in; align-items: center; border: 1px solid rgba(151,178,206,0.23); border-radius: 0.12in; background: rgba(255,255,255,0.055); padding: 0.13in; }
+  .layer .tag { color: #50d6b4; font-weight: 900; font-size: 0.14in; }
+  .layer p { color: #c7d4e2; font-size: 0.15in; line-height: 1.28; }
+  .roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.14in; margin-top: 0.24in; }
+  .phase { min-height: 2.9in; display: grid; grid-template-rows: auto auto 1fr; border-top: 0.04in solid #50d6b4; }
+  .phase .year { color: #50d6b4; font-size: 0.14in; font-weight: 900; letter-spacing: 0.06em; }
+  .phase h3 { margin: 0.10in 0; font-size: 0.22in; }
+  .phase p { color: #aebed0; font-size: 0.135in; line-height: 1.34; }
+  .bigword { position: absolute; right: -0.15in; bottom: 0.15in; color: rgba(255,255,255,0.04); font-size: 1.35in; font-weight: 950; letter-spacing: -0.08em; }
+  .matrix { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.16in; }
+  .matrix .card { min-height: 1.4in; }
+  .matrix h3 { font-size: 0.19in; color: #ffffff; margin-bottom: 0.07in; }
+  .matrix p { color: #aebed0; font-size: 0.135in; line-height: 1.33; }
+  .center { align-self: center; }
+  .full { grid-row: 2; }
+  .cta { display: inline-flex; margin-top: 0.28in; border: 1px solid rgba(80,214,180,0.5); color: #06131c; background: #50d6b4; border-radius: 999px; padding: 0.12in 0.22in; font-weight: 900; font-size: 0.15in; letter-spacing: 0.02em; }
+  .logo-mark { width: 0.44in; height: 0.44in; border-radius: 0.11in; background: linear-gradient(135deg, #50d6b4, #2f8cff); display: inline-grid; place-items: center; color: #06131c; font-weight: 950; margin-right: 0.11in; }
+  .brand-left { display: flex; align-items: center; }
+  .subtitle { margin-top: 0.12in; color: #8fa5bc; font-size: 0.16in; letter-spacing: 0.04em; text-transform: uppercase; }
+  .fit-note { font-size: 0.112in; color: #72879d; margin-top: 0.08in; }
+  @media print {
+    html, body, .deck { width: 13.333in; margin: 0; background: #071018; }
+    .slide { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+<section class="slide">
+  <div class="brand"><div class="brand-left"><span class="logo-mark">A</span><strong>The Architect</strong></div><span class="pill">QubitDev Foundation - May 2026</span></div>
+  <div class="grid2 center">
+    <div>
+      <div class="kicker">Civilization operating protocol</div>
+      <h1>A transparent, merit-based system for a one-goal planet.</h1>
+      <p class="lead">The Architect is an opt-in governance, industry, and AI security framework that aligns institutions, business models, and technology toward human dignity, living systems, peace, and long-term evolution.</p>
+      <div class="cta">Pitch deck - PDF edition</div>
+      <a href="THE_ARCHITECT_WHITEPAPER.html" style="display:inline-flex;margin-top:0.08in;margin-left:0.12in;border:1px solid rgba(47,140,255,0.5);color:#fff;background:rgba(47,140,255,0.2);border-radius:999px;padding:0.08in 0.2in;font-weight:700;font-size:0.12in;letter-spacing:0.02em;text-decoration:none;" onmouseover="this.style.background='rgba(47,140,255,0.4)'" onmouseout="this.style.background='rgba(47,140,255,0.2)'">Read Whitepaper →</a>
+    </div>
+    <div class="visual">
+      <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <div class="node n1"></div><div class="node n2"></div><div class="node n3"></div><div class="node n4"></div>
+      <svg viewBox="0 0 600 420" preserveAspectRatio="none" aria-label="planetary network visual">
+        <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#50d6b4"/><stop offset="1" stop-color="#2f8cff"/></linearGradient></defs>
+        <path d="M90 220 C170 80 380 70 512 210" fill="none" stroke="url(#g)" stroke-width="3" opacity="0.75"/>
+        <path d="M110 300 C245 205 375 205 500 315" fill="none" stroke="#50d6b4" stroke-width="2" opacity="0.48"/>
+        <circle cx="300" cy="215" r="88" fill="rgba(80,214,180,0.08)" stroke="rgba(80,214,180,0.55)" stroke-width="2"/>
+        <path d="M223 215 C250 176 350 176 377 215 C350 255 250 255 223 215Z" fill="rgba(47,140,255,0.10)" stroke="rgba(47,140,255,0.55)"/>
+        <text x="300" y="224" text-anchor="middle" fill="#ffffff" font-size="28" font-weight="800">ONE GOAL</text>
+        <text x="300" y="255" text-anchor="middle" fill="#9eb0c2" font-size="14">people + planet + peace</text>
+      </svg>
+    </div>
+  </div>
+  <div class="foot"><span>quantumqub.com</span><span class="num">01</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">The problem</span></div>
+  <div class="full center">
+    <div class="kicker">Why now</div>
+    <h2>Humanity runs on institutions built for a slower, smaller world.</h2>
+    <div class="grid4" style="margin-top:0.34in;">
+      <div class="card"><div class="metric"><span>$</span>2.6T</div><div class="label">estimated annual corruption cost worldwide</div></div>
+      <div class="card"><div class="metric">195</div><div class="label">sovereign legal systems with conflicting rules</div></div>
+      <div class="card"><div class="metric">37.4B</div><div class="label">tonnes of annual CO2 emissions in 2024</div></div>
+      <div class="card"><div class="metric">123M</div><div class="label">forcibly displaced people by end of 2024</div></div>
+    </div>
+    <p class="lead">The failures are connected: opaque finance, captured institutions, brittle supply chains, unpriced externalities, war economies, weak evidence loops, and technology without constitutional guardrails.</p>
+  </div>
+  <div class="foot"><span>Corruption, climate, inequality, legal fragmentation, conflict</span><span class="num">02</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">The thesis</span></div>
+  <div class="grid2 center">
+    <div>
+      <div class="kicker">Core insight</div>
+      <p class="quote">No person, company, state, algorithm, army, or market may call itself successful by pushing its costs into other people, other species, the environment, or the future.</p>
+      <p class="source">This is the operating principle behind the Constitution v2.1 and the Phase 4 universal sector critique.</p>
+    </div>
+    <div class="matrix">
+      <div class="card"><h3>Institutions</h3><p>Open ledgers, public KPIs, anti-capture rules, transparent procurement.</p></div>
+      <div class="card"><h3>Markets</h3><p>Profit remains legitimate only when external harms are measured and paid.</p></div>
+      <div class="card"><h3>AI</h3><p>Human authority, DPI inspection, appeal rights, and auditable outputs.</p></div>
+      <div class="card"><h3>Planet</h3><p>Climate, biodiversity, animal welfare, One Health, and future generations.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>One-goal planet, not one-thought planet</span><span class="num">03</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">Architecture</span></div>
+  <div class="grid2 center">
+    <div>
+      <div class="kicker">Five layers</div>
+      <h2>A federated stack for transparent civilization infrastructure.</h2>
+      <p class="lead">Each layer can be adopted progressively by nations, cities, companies, and institutions without creating a centralized world government.</p>
+    </div>
+    <div class="layer-stack">
+      <div class="layer"><div class="tag">01 GovLedger</div><p>Every public cent traceable, auditable, and privacy-protected.</p></div>
+      <div class="layer"><div class="tag">02 GovOS</div><p>Digital services, SSID identity, voting, petitions, public access.</p></div>
+      <div class="layer"><div class="tag">03 WorkOS</div><p>Automation tax, UBI, worker transition, purpose infrastructure.</p></div>
+      <div class="layer"><div class="tag">04 LexGlobal</div><p>Machine-readable law and cross-border dispute resolution.</p></div>
+      <div class="layer"><div class="tag">05 HumanityOS</div><p>Planetary restoration, energy, science, and interplanetary governance.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Opt-in protocol with full data portability</span><span class="num">04</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">Constitution v2.1</span></div>
+  <div class="full center">
+    <div class="kicker">Legal kernel</div>
+    <h2>Perfect governance starts with rights that cannot be quietly bypassed.</h2>
+    <div class="grid3" style="margin-top:0.32in;">
+      <div class="card"><h3>Dignity and material security</h3><p class="small">Food, shelter, healthcare, education, connectivity, UBI, fair trial, privacy, and freedom from coercion.</p></div>
+      <div class="card"><h3>Merit and anti-dynasty</h3><p class="small">Public roles, grants, promotions, contracts, and enterprise decisions must be transparent and competence-based.</p></div>
+      <div class="card"><h3>Hyper-amendment</h3><p class="small">Kernel rights can evolve, but only through extraordinary democratic consensus and cooling periods.</p></div>
+    </div>
+    <div class="grid3" style="margin-top:0.18in;">
+      <div class="card"><h3>Transparency Authority</h3><p class="small">A fourth branch dedicated to audit, corruption detection, and public accountability.</p></div>
+      <div class="card"><h3>Emergency limits</h3><p class="small">No emergency can suspend dignity, fair trial, free press, GovLedger access, or core rights.</p></div>
+      <div class="card"><h3>Planetary citizenship</h3><p class="small">Rights travel with the citizen across Earth, stations, vessels, and future settlements.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Articles 1-65 plus Phase 4 sector expansion</span><span class="num">05</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">All industries</span></div>
+  <div class="grid2 center">
+    <div>
+      <div class="kicker">Universal Sector Compact</div>
+      <h2>Every business model must account for its full impact.</h2>
+      <div class="list">
+        <div class="item"><span class="dot"></span><span>Integrated Impact Ledgers for labor, emissions, water, waste, biodiversity, tax, supply chains, and community effects.</span></div>
+        <div class="item"><span class="dot"></span><span>Sector Stewardship Councils for food, water, energy, mining, finance, media, platforms, healthcare, logistics, defense, and more.</span></div>
+        <div class="item"><span class="dot"></span><span>Public incentives, contracts, licenses, and subsidies tied to verified impact performance.</span></div>
+      </div>
+    </div>
+    <div class="visual">
+      <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid meet">
+        <rect x="42" y="40" width="516" height="340" rx="26" fill="rgba(255,255,255,0.04)" stroke="rgba(151,178,206,0.28)"/>
+        <circle cx="300" cy="210" r="72" fill="rgba(80,214,180,0.18)" stroke="#50d6b4" stroke-width="3"/>
+        <text x="300" y="202" text-anchor="middle" fill="#fff" font-size="24" font-weight="800">IMPACT</text>
+        <text x="300" y="230" text-anchor="middle" fill="#aebed0" font-size="14">ledger</text>
+        <g fill="none" stroke="#2f8cff" stroke-width="2" opacity="0.8">
+          <path d="M300 138 L300 70"/><path d="M372 210 L500 210"/><path d="M300 282 L300 350"/><path d="M228 210 L100 210"/>
+          <path d="M350 160 L470 90"/><path d="M350 260 L470 330"/><path d="M250 260 L130 330"/><path d="M250 160 L130 90"/>
+        </g>
+        <g fill="#fff" font-size="15" font-weight="700">
+          <text x="266" y="66">Labor</text><text x="470" y="215">Finance</text><text x="265" y="366">Waste</text><text x="66" y="215">Water</text>
+          <text x="440" y="88">Supply</text><text x="438" y="342">Peace</text><text x="86" y="342">Animals</text><text x="82" y="88">Climate</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="foot"><span>Articles 58G-58N</span><span class="num">06</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">AI security</span></div>
+  <div class="grid2 center">
+    <div>
+      <div class="kicker">Lobster Trap DPI layer</div>
+      <h2>Every governance AI call is inspected before and after the model.</h2>
+      <p class="lead">Lobster Trap acts as a deep prompt inspection firewall: sub-millisecond rule checks, ingress and egress inspection, P4-style policy actions, human review, quarantine, rate limiting, and audit logs.</p>
+    </div>
+    <div class="card" style="padding:0.28in;">
+      <h3 style="margin-bottom:0.18in;">Protected AI pipeline</h3>
+      <div class="layer-stack">
+        <div class="layer"><div class="tag">Ingress</div><p>Prompt injection, impersonation, secrets, exfiltration, malware, and obfuscation checks.</p></div>
+        <div class="layer"><div class="tag">Policy</div><p>ALLOW, DENY, LOG, HUMAN_REVIEW, QUARANTINE, RATE_LIMIT.</p></div>
+        <div class="layer"><div class="tag">Egress</div><p>PII, credentials, fabricated citations, harmful instructions, bias, unauthorized commands.</p></div>
+        <div class="layer"><div class="tag">Audit</div><p>Structured logs linked to GovLedger and Transparency Authority oversight.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>AI remains a tool under human authority</span><span class="num">07</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">Purpose</span></div>
+  <div class="grid2 center">
+    <div>
+      <div class="kicker">Beyond survival</div>
+      <h2>Give scope to people who have none.</h2>
+      <p class="lead">UBI protects dignity. Civic Mission Service creates non-coercive pathways for contribution: restoration, care, tutoring, science, open-source infrastructure, arts, local food systems, and exploration.</p>
+    </div>
+    <div class="matrix">
+      <div class="card"><h3>Learn</h3><p>Personal Growth Accounts and lifelong learning credits.</p></div>
+      <div class="card"><h3>Care</h3><p>Paid voluntary missions in elder care, childcare, disability support.</p></div>
+      <div class="card"><h3>Restore</h3><p>Local climate, biodiversity, water, soil, and pollution projects.</p></div>
+      <div class="card"><h3>Explore</h3><p>Science, space, oceans, engineering, culture, and civic invention.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Purpose without coercion</span><span class="num">08</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">Rollout</span></div>
+  <div class="full center">
+    <div class="kicker">50-year roadmap</div>
+    <h2>Start small, prove outcomes, scale by adoption.</h2>
+    <div class="roadmap">
+      <div class="card phase"><div class="year">2026-2035</div><h3>Foundation</h3><p>GovLedger pilots, SSID, procurement transparency, Lobster Trap AI security, first founding jurisdictions.</p></div>
+      <div class="card phase"><div class="year">2035-2050</div><h3>Scale</h3><p>GovOS, WorkOS, UBI pilots, sector ledgers, legal interoperability, corporate adoption.</p></div>
+      <div class="card phase"><div class="year">2050-2065</div><h3>Global</h3><p>100+ jurisdictions, shorter workweek, climate and energy coordination, post-quantum migration.</p></div>
+      <div class="card phase"><div class="year">2065-2076</div><h3>Abundance</h3><p>Basic scarcity eliminated in participants, space governance, restoration, voluntary creative work.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>No forced world government - voluntary federation</span><span class="num">09</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">Proof points</span></div>
+  <div class="full center">
+    <div class="kicker">Grounded in existing evidence</div>
+    <h2>The pieces already exist. The missing work is integration, law, and trust.</h2>
+    <div class="grid3" style="margin-top:0.30in;">
+      <div class="card"><h3>Prozorro</h3><p class="small">Transparent procurement showed large public savings through open competition and visibility.</p></div>
+      <div class="card"><h3>Estonia</h3><p class="small">Digital government, X-Road, and e-identity prove public services can be fast and auditable.</p></div>
+      <div class="card"><h3>UNGPs</h3><p class="small">Business and human rights due diligence provides a mature basis for sector accountability.</p></div>
+    </div>
+    <div class="grid3" style="margin-top:0.18in;">
+      <div class="card"><h3>WHO One Health</h3><p class="small">Human, animal, and ecosystem health are one governance problem.</p></div>
+      <div class="card"><h3>IPCC + Paris</h3><p class="small">Climate policy needs transparent five-year ambition and adaptation cycles.</p></div>
+      <div class="card"><h3>WOAH welfare</h3><p class="small">Animal welfare standards translate ethics into enforceable conditions.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Scientific and institutional references, not hallucinated claims</span><span class="num">10</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><strong>The Architect</strong><span class="pill">Ask</span></div>
+  <div class="grid2 center">
+    <div>
+      <div class="kicker">What we need next</div>
+      <h2>Build the founding coalition and the reference implementation.</h2>
+      <div class="list">
+        <div class="item"><span class="dot"></span><span>Founding city, nation, or institutional pilot for GovLedger and transparent procurement.</span></div>
+        <div class="item"><span class="dot"></span><span>Technical contributors for SSID, GovLedger, CorpLedger, Impact Ledger, and Lobster Trap integration.</span></div>
+        <div class="item"><span class="dot"></span><span>Legal, policy, labor, health, environment, defense, and sector experts for adversarial review.</span></div>
+      </div>
+    </div>
+    <div class="card" style="padding:0.35in;">
+      <div class="metric">Pilot <span>1</span></div>
+      <p class="lead" style="font-size:0.22in; margin-top:0.18in;">One transparent jurisdiction can prove the model. One working proof can attract the next ten.</p>
+      <p class="fit-note">Recommended first pilot: procurement transparency + AI security + public dashboard + independent audit.</p>
+    </div>
+  </div>
+  <div class="foot"><span>QubitDev Foundation</span><span class="num">11</span></div>
+</section>
+
+<section class="slide">
+  <div class="brand"><div class="brand-left"><span class="logo-mark">A</span><strong>The Architect</strong></div><span class="pill">quantumqub.com</span></div>
+  <div class="center">
+    <div class="kicker">Closing</div>
+    <h1 style="max-width:10.8in;">The question is not whether humanity can build this system.</h1>
+    <p class="lead" style="max-width:8.5in;">The question is whether humanity will choose to make power visible, harm accountable, life protected, and every person useful to the future.</p>
+    <div class="cta">The Architect - Constitution v2.1 - Pitch Deck</div>
+    <a href="THE_ARCHITECT_WHITEPAPER.html" style="display:inline-flex;margin-top:0.18in;border:1px solid rgba(47,140,255,0.5);color:#fff;background:rgba(47,140,255,0.25);border-radius:999px;padding:0.12in 0.28in;font-weight:800;font-size:0.14in;letter-spacing:0.02em;text-decoration:none;backdrop-filter:blur(8px);transition:background .2s;" onmouseover="this.style.background='rgba(47,140,255,0.45)'" onmouseout="this.style.background='rgba(47,140,255,0.25)'">Open Full Whitepaper →</a>
+  </div>
+  <div class="bigword">ARCHITECT</div>
+  <div class="foot"><span>CC BY-SA 4.0 - QubitDev Foundation</span><span class="num">12</span></div>
+</section>
+
+</div>
+</body>
+</html>
