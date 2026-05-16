@@ -1,7 +1,7 @@
 import type { PlatformRoadmap } from "@/lib/types";
 
 export const platformRoadmap: PlatformRoadmap = {
-  release: "v3.0.0",
+  release: "v4.0.0",
   sourceRepository: "https://github.com/qubitpage/thearchitect",
   latestRelease: "https://github.com/qubitpage/thearchitect/releases/latest",
   constitutionUrl: "/constitution.html",
@@ -63,6 +63,27 @@ export const platformRoadmap: PlatformRoadmap = {
       owner: "Security Office",
     },
     {
+      id: "enterprise-governance",
+      name: "Enterprise Governance Module",
+      summary: "Multi-tenant enterprise SaaS with Lobster Trap DPI, Gemini AI agent, compliance packs (HIPAA/SOC2/Finance), and per-tenant dashboards.",
+      status: "live",
+      owner: "Enterprise Platform Team",
+    },
+    {
+      id: "lobster-trap-dpi",
+      name: "Lobster Trap Policy Engine",
+      summary: "18 DPI rules across 4 compliance packs with P4-style first-match-wins evaluation and YAML export for Veea Lobster Trap proxy.",
+      status: "live",
+      owner: "AI Safety Office",
+    },
+    {
+      id: "gemini-agent",
+      name: "Gemini AI Governance Agent",
+      summary: "Google Gemini-powered analysis for spending, compliance, risk, documents, anomalies, and policy recommendations.",
+      status: "live",
+      owner: "AI Intelligence Team",
+    },
+    {
       id: "persistent-ledger",
       name: "Persistent Ledger Storage",
       summary: "PostgreSQL-backed storage with migrations (roadmap — currently JSON file persistence).",
@@ -94,6 +115,13 @@ export const platformRoadmap: PlatformRoadmap = {
     },
     {
       id: "m4",
+      phase: "Enterprise Governance",
+      horizon: "Completed",
+      goal: "Multi-tenant enterprise module with Lobster Trap DPI, Gemini AI agent, 4 compliance packs, per-tenant dashboards, and hackathon demo.",
+      status: "live",
+    },
+    {
+      id: "m5",
       phase: "Federation",
       horizon: "90 - 180 days",
       goal: "Support multiple jurisdictions, roles, delegated reviews, inter-jurisdiction data portability, and policy packs.",
