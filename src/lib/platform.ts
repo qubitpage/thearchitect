@@ -1,7 +1,7 @@
 import type { PlatformRoadmap } from "@/lib/types";
 
 export const platformRoadmap: PlatformRoadmap = {
-  release: "v2.2.0",
+  release: "v3.0.0",
   sourceRepository: "https://github.com/qubitpage/thearchitect",
   latestRelease: "https://github.com/qubitpage/thearchitect/releases/latest",
   constitutionUrl: "/constitution.html",
@@ -38,13 +38,34 @@ export const platformRoadmap: PlatformRoadmap = {
       id: "public-portal",
       name: "Public Transparency Portal",
       summary: "Read-only citizen view for spending, sector impact, public audit events, and release documents.",
-      status: "building",
+      status: "live",
       owner: "Civic Interface Team",
+    },
+    {
+      id: "audit-chain",
+      name: "Audit Hash Chain",
+      summary: "SHA-256 tamper-evident hash chain for all audit events with verification endpoint.",
+      status: "live",
+      owner: "Infrastructure Team",
+    },
+    {
+      id: "export-bundles",
+      name: "Export Proof Bundles",
+      summary: "Downloadable JSON packages with full snapshot, hash chain, and bundle integrity hash.",
+      status: "live",
+      owner: "Transparency Authority",
+    },
+    {
+      id: "rbac",
+      name: "Role-Based Access Control",
+      summary: "7 roles (citizen to system) with granular permissions on every API endpoint.",
+      status: "live",
+      owner: "Security Office",
     },
     {
       id: "persistent-ledger",
       name: "Persistent Ledger Storage",
-      summary: "PostgreSQL-backed storage, migrations, append-only audit hashes, and export bundles.",
+      summary: "PostgreSQL-backed storage with migrations (roadmap — currently JSON file persistence).",
       status: "planned",
       owner: "Infrastructure Team",
     },
@@ -53,23 +74,23 @@ export const platformRoadmap: PlatformRoadmap = {
     {
       id: "m1",
       phase: "Foundation",
-      horizon: "Now - 30 days",
-      goal: "Stabilize APIs, registry, release metadata, security policy, and pilot onboarding workflows.",
-      status: "building",
+      horizon: "Completed",
+      goal: "APIs, RBAC, registry, security policy, audit chain, export bundles, and pilot onboarding workflows.",
+      status: "live",
     },
     {
       id: "m2",
       phase: "Persistence",
       horizon: "30 - 60 days",
-      goal: "Move runtime data to PostgreSQL, add migrations, audit hashing, and signed export bundles.",
-      status: "planned",
+      goal: "Move runtime data to PostgreSQL, add migrations and append-only storage.",
+      status: "building",
     },
     {
       id: "m3",
       phase: "Public Trust",
-      horizon: "60 - 90 days",
-      goal: "Launch citizen transparency portal, public search, proof downloads, and issue reporting.",
-      status: "planned",
+      horizon: "Completed",
+      goal: "Citizen transparency portal with search, hash chain verification, and proof downloads.",
+      status: "live",
     },
     {
       id: "m4",
@@ -90,12 +111,5 @@ export function getPlatformHealth() {
     ok: true,
     release: platformRoadmap.release,
     checkedAt: new Date().toISOString(),
-    subsystems: [
-      { name: "GovLedger API", status: "ok" },
-      { name: "Impact Ledger API", status: "ok" },
-      { name: "AI DPI API", status: "ok" },
-      { name: "Jurisdiction Registry", status: "ok" },
-      { name: "Local JSON Store", status: "development" },
-    ],
   };
 }

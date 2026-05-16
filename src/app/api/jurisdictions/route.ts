@@ -1,3 +1,4 @@
+import { authorize } from "@/lib/auth";
 import { addJurisdiction, getStore } from "@/lib/store";
 import { jurisdictionSchema } from "@/lib/validation";
 
@@ -7,6 +8,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const auth = authorize(request, "write:jurisdiction");
+  if (!auth.ok) return auth.error;
+
   const payload = await request.json().catch(() => null);
   const parsed = jurisdictionSchema.safeParse(payload);
 

@@ -1,5 +1,5 @@
-import { getPlatformHealth } from "@/lib/platform";
+import { getDeepHealthCheck } from "@/lib/health";
 
 export async function GET() {
-  return Response.json(getPlatformHealth());
+  return Response.json(getDeepHealthCheck());
 }

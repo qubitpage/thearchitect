@@ -1,3 +1,4 @@
+import { authorize } from "@/lib/auth";
 import { addGovLedgerTransaction } from "@/lib/store";
 import { govLedgerTransactionSchema } from "@/lib/validation";
 
@@ -7,6 +8,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const auth = authorize(request, "write:govledger");
+  if (!auth.ok) return auth.error;
+
   const payload = await request.json().catch(() => null);
   const parsed = govLedgerTransactionSchema.safeParse(payload);
 

@@ -1,8 +1,12 @@
+import { authorize } from "@/lib/auth";
 import { isBlockingAction } from "@/lib/security-policy";
 import { addDpiInspection } from "@/lib/store";
 import { dpiInspectionSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
+  const auth = authorize(request, "write:inspection");
+  if (!auth.ok) return auth.error;
+
   const payload = await request.json().catch(() => null);
   const parsed = dpiInspectionSchema.safeParse(payload);
 

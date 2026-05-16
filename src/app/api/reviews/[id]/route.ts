@@ -1,3 +1,4 @@
+import { authorize } from "@/lib/auth";
 import { updateReviewStatus } from "@/lib/store";
 import { z } from "zod";
 
@@ -6,6 +7,9 @@ const reviewActionSchema = z.object({
 });
 
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
+  const auth = authorize(request, "write:review");
+  if (!auth.ok) return auth.error;
+
   const { id } = await context.params;
   const payload = await request.json().catch(() => null);
   const parsed = reviewActionSchema.safeParse(payload);

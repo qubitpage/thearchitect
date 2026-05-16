@@ -119,7 +119,10 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
     try {
       const response = await fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-architect-role": "federation_admin",
+        },
         body: JSON.stringify(body),
       });
       const payload = await response.json();
@@ -144,7 +147,10 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
     try {
       const response = await fetch(`/api/reviews/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-architect-role": "auditor",
+        },
         body: JSON.stringify({ status }),
       });
 
@@ -207,6 +213,12 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
                 target="_blank"
               >
                 <Rocket size={16} /> Latest Release
+              </a>
+              <a
+                className="inline-flex h-11 items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-4 text-sm font-bold text-emerald-800 transition hover:border-emerald-400 hover:bg-emerald-100"
+                href="/transparency"
+              >
+                <Globe2 size={16} /> Transparency Portal
               </a>
             </div>
           </div>
