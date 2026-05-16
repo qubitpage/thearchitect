@@ -13,6 +13,8 @@ This repository contains the first runnable implementation slice: a Next.js cons
 - **GovLedger**: public spending records with classification, risk scoring, review status, and audit events.
 - **Impact Ledger**: emissions, water, waste, labor, biodiversity, animal welfare, and supply-chain risk reporting.
 - **AI Firewall**: deterministic DPI inspection for prompt injection, credential leakage, PII exposure, exfiltration, unsafe commands, and fabricated citations.
+- **Jurisdiction Registry**: pilot onboarding, module activation, governance model metadata, and federation readiness.
+- **Platform Roadmap**: release metadata, live/building/planned modules, and milestone tracking.
 - **Review Actions**: accept, return to review, quarantine, or reject ledger entries.
 - **Live Snapshot API**: one endpoint for dashboard state and external observers.
 - **Local Persistence**: development JSON store ignored by Git and ready to be replaced by PostgreSQL.
@@ -28,6 +30,8 @@ Next.js App Router API
 			+-- GovLedger transaction intake
 			+-- Universal Sector impact intake
 			+-- AI DPI inspection policy
+			+-- Jurisdiction registry
+			+-- Platform roadmap and health metadata
 			+-- Review action endpoint
 			+-- Audit event stream
 			|
@@ -70,6 +74,41 @@ GET /api/system
 ```
 
 Returns metrics, recent GovLedger transactions, impact entries, DPI inspections, and audit events.
+
+### Platform Roadmap
+
+```http
+GET /api/platform/roadmap
+```
+
+Returns release links, platform modules, ownership, and milestone status.
+
+### Platform Health
+
+```http
+GET /api/platform/health
+```
+
+Returns release health and subsystem readiness.
+
+### Jurisdiction Registry
+
+```http
+GET /api/jurisdictions
+POST /api/jurisdictions
+Content-Type: application/json
+```
+
+```json
+{
+	"name": "Danube Civic Pilot",
+	"region": "Earth / Europe",
+	"governanceModel": "Municipal pilot with citizen audit board",
+	"population": 85000,
+	"status": "candidate",
+	"modules": ["GovLedger", "Impact Ledger", "AI DPI", "Jurisdiction Registry"]
+}
+```
 
 ### GovLedger Transaction
 

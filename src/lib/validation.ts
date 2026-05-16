@@ -31,6 +31,20 @@ export const dpiInspectionSchema = z.object({
   content: z.string().min(1).max(10_000),
 });
 
+export const jurisdictionSchema = z.object({
+  name: z.string().trim().min(2).max(120),
+  region: z.string().trim().min(2).max(120),
+  governanceModel: z.string().trim().min(2).max(120),
+  population: z.coerce.number().int().min(1).max(20_000_000_000),
+  status: z.enum(["candidate", "pilot", "active", "paused"]).default("candidate"),
+  modules: z
+    .array(z.string().trim().min(2).max(80))
+    .min(1)
+    .max(12)
+    .default(["GovLedger", "Impact Ledger", "AI DPI"]),
+});
+
 export type GovLedgerTransactionInput = z.infer<typeof govLedgerTransactionSchema>;
 export type ImpactLedgerEntryInput = z.infer<typeof impactLedgerEntrySchema>;
 export type DpiInspectionInput = z.infer<typeof dpiInspectionSchema>;
+export type JurisdictionInput = z.infer<typeof jurisdictionSchema>;

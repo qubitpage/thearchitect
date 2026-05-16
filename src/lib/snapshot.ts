@@ -1,4 +1,5 @@
 import { getStore } from "@/lib/store";
+import { getPlatformRoadmap } from "@/lib/platform";
 import type { SystemSnapshot } from "@/lib/types";
 
 export function getSystemSnapshot(): SystemSnapshot {
@@ -24,7 +25,11 @@ export function getSystemSnapshot(): SystemSnapshot {
       quarantinedItems,
       averageImpactRisk,
       inspections: store.inspections.length,
+      jurisdictions: store.jurisdictions.length,
+      activeJurisdictions: store.jurisdictions.filter((item) => item.status === "active" || item.status === "pilot").length,
     },
+    platform: getPlatformRoadmap(),
+    jurisdictions: store.jurisdictions.slice(0, 12),
     transactions: store.transactions.slice(0, 12),
     impactEntries: store.impactEntries.slice(0, 12),
     inspections: store.inspections.slice(0, 12),

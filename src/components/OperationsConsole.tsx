@@ -4,12 +4,15 @@ import {
   Activity,
   AlertTriangle,
   BadgeCheck,
+  Building2,
   FileText,
   Gavel,
+  GitBranch,
   Globe2,
   Landmark,
   Leaf,
   RefreshCcw,
+  Rocket,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
@@ -27,8 +30,8 @@ function formatCurrency(amount: number) {
 }
 
 function statusTone(status: string) {
-  if (status === "accepted" || status === "ALLOW" || status === "LOG") return "text-emerald-700 bg-emerald-50 border-emerald-200";
-  if (status === "pending_review" || status === "HUMAN_REVIEW" || status === "RATE_LIMIT") return "text-amber-700 bg-amber-50 border-amber-200";
+  if (["accepted", "ALLOW", "LOG", "active", "pilot", "live"].includes(status)) return "text-emerald-700 bg-emerald-50 border-emerald-200";
+  if (["pending_review", "HUMAN_REVIEW", "RATE_LIMIT", "candidate", "building", "planned"].includes(status)) return "text-amber-700 bg-amber-50 border-amber-200";
   return "text-red-700 bg-red-50 border-red-200";
 }
 
@@ -104,7 +107,14 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
     setMessage("Submitting to The Architect control plane");
 
     const form = event.currentTarget;
-    const body = Object.fromEntries(new FormData(form).entries());
+    const body: Record<string, unknown> = Object.fromEntries(new FormData(form).entries());
+
+    if (typeof body.modules === "string") {
+      body.modules = body.modules
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
 
     try {
       const response = await fetch(endpoint, {
@@ -159,7 +169,7 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
           <div className="grid content-center gap-5">
             <div className="flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-cyan-700">
               <span className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1">
-                <Globe2 size={14} /> The Architect v0.1
+                <Globe2 size={14} /> The Architect {snapshot.platform.release}
               </span>
               <span>Founding jurisdiction console</span>
             </div>
@@ -180,9 +190,23 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
               </a>
               <a
                 className="inline-flex h-11 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-bold text-slate-800 transition hover:border-cyan-300 hover:text-cyan-800"
+                href="/api/platform/health"
+              >
+                <GitBranch size={16} /> Platform Health
+              </a>
+              <a
+                className="inline-flex h-11 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-bold text-slate-800 transition hover:border-cyan-300 hover:text-cyan-800"
                 href="/THE_ARCHITECT_PITCH_DECK.pdf"
               >
                 <FileText size={16} /> Pitch Deck
+              </a>
+              <a
+                className="inline-flex h-11 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-bold text-slate-800 transition hover:border-cyan-300 hover:text-cyan-800"
+                href={snapshot.platform.latestRelease}
+                rel="noopener"
+                target="_blank"
+              >
+                <Rocket size={16} /> Latest Release
               </a>
             </div>
           </div>
@@ -213,11 +237,74 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-4 px-5 py-6 lg:grid-cols-4 lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-4 px-5 py-6 lg:grid-cols-5 lg:px-8">
         <Kpi icon={<Landmark size={18} />} label="GovLedger transactions" value={snapshot.metrics.transactions} />
         <Kpi icon={<Leaf size={18} />} label="Impact entries" value={snapshot.metrics.impactEntries} />
         <Kpi icon={<ShieldCheck size={18} />} label="Quarantined items" value={snapshot.metrics.quarantinedItems} />
         <Kpi icon={<Gavel size={18} />} label="Average impact risk" value={`${snapshot.metrics.averageImpactRisk}/100`} />
+        <Kpi icon={<Building2 size={18} />} label="Pilot jurisdictions" value={snapshot.metrics.activeJurisdictions} />
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-700">Development roadmap</p>
+              <h2 className="text-xl font-black tracking-tight text-slate-950">Platform build track</h2>
+            </div>
+            <a className="text-sm font-bold text-cyan-700 hover:text-cyan-900" href="/api/platform/roadmap">
+              JSON
+            </a>
+          </div>
+          <div className="grid gap-4 p-5 md:grid-cols-2">
+            {snapshot.platform.modules.map((module) => (
+              <article className="rounded-md border border-slate-200 bg-slate-50 p-4" key={module.id}>
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-black text-slate-950">{module.name}</h3>
+                  <span className={`rounded-full border px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.08em] ${statusTone(module.status)}`}>{module.status}</span>
+                </div>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{module.summary}</p>
+                <p className="mt-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-400">{module.owner}</p>
+              </article>
+            ))}
+          </div>
+          <div className="border-t border-slate-100 p-5">
+            <div className="grid gap-3">
+              {snapshot.platform.milestones.map((milestone) => (
+                <article className="grid gap-1 rounded-md border border-slate-200 p-4" key={milestone.id}>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-sm font-black text-slate-950">{milestone.phase}</h3>
+                    <span className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{milestone.horizon}</span>
+                  </div>
+                  <p className="text-sm leading-6 text-slate-600">{milestone.goal}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <form className="grid content-start gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm" onSubmit={(event) => postForm(event, "/api/jurisdictions") }>
+          <PanelHeader icon={<Building2 size={18} />} eyebrow="Federation" title="Jurisdiction onboarding" />
+          <div className="grid gap-3 md:grid-cols-2">
+            <Field label="Name" name="name" defaultValue="Danube Civic Pilot" />
+            <Field label="Region" name="region" defaultValue="Earth / Europe" />
+            <Field label="Governance model" name="governanceModel" defaultValue="Municipal pilot with citizen audit board" />
+            <Field label="Population" name="population" type="number" defaultValue={85000} min={1} />
+            <label className="grid gap-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              Status
+              <select className="h-10 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium normal-case tracking-normal text-slate-950 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" name="status" defaultValue="candidate">
+                <option value="candidate">Candidate</option>
+                <option value="pilot">Pilot</option>
+                <option value="active">Active</option>
+                <option value="paused">Paused</option>
+              </select>
+            </label>
+            <TextArea label="Modules" name="modules" defaultValue="GovLedger, Impact Ledger, AI DPI, Jurisdiction Registry" />
+          </div>
+          <button className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-slate-800" type="submit">
+            <Building2 size={16} /> Register jurisdiction
+          </button>
+        </form>
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-5 px-5 pb-8 lg:grid-cols-3 lg:px-8">
@@ -308,6 +395,14 @@ export function OperationsConsole({ initialSnapshot }: { initialSnapshot: System
           status: item.action,
           risk: item.riskScore,
           flags: item.matchedRules,
+        }))} />
+        <DataPanel title="Jurisdiction registry" rows={snapshot.jurisdictions.map((item) => ({
+          id: item.id,
+          title: item.name,
+          detail: `${item.region} - ${item.governanceModel} - ${item.population.toLocaleString()} people`,
+          status: item.status,
+          risk: item.status === "paused" ? 60 : 0,
+          flags: item.modules,
         }))} />
         <DataPanel title="Audit stream" rows={snapshot.auditEvents.map((item) => ({
           id: item.id,

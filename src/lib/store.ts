@@ -9,18 +9,21 @@ import type {
   DpiInspection,
   GovLedgerTransaction,
   ImpactLedgerEntry,
+  Jurisdiction,
   ReviewStatus,
 } from "@/lib/types";
 import type {
   DpiInspectionInput,
   GovLedgerTransactionInput,
   ImpactLedgerEntryInput,
+  JurisdictionInput,
 } from "@/lib/validation";
 
 type ArchitectStore = {
   transactions: GovLedgerTransaction[];
   impactEntries: ImpactLedgerEntry[];
   inspections: DpiInspection[];
+  jurisdictions: Jurisdiction[];
   auditEvents: AuditEvent[];
 };
 
@@ -111,6 +114,18 @@ function createSeedStore(): ArchitectStore {
         content: "Summarize the procurement risk and preserve the audit references.",
       }),
     ],
+    jurisdictions: [
+      {
+        id: "jur_seed_foundation_001",
+        name: "Founding City Pilot",
+        region: "Earth / European civic pilot",
+        governanceModel: "Charter city with citizen oversight board",
+        population: 250_000,
+        status: "pilot",
+        modules: ["GovLedger", "Impact Ledger", "AI DPI", "Jurisdiction Registry"],
+        createdAt: bootedAt,
+      },
+    ],
     auditEvents: [
       {
         id: "audit_seed_bootstrap",
@@ -123,13 +138,22 @@ function createSeedStore(): ArchitectStore {
   };
 }
 
+function normalizeStore(store: ArchitectStore) {
+  store.transactions ??= [];
+  store.impactEntries ??= [];
+  store.inspections ??= [];
+  store.jurisdictions ??= createSeedStore().jurisdictions;
+  store.auditEvents ??= [];
+  return store;
+}
+
 function loadStore(): ArchitectStore {
   if (!existsSync(storePath)) {
     return createSeedStore();
   }
 
   try {
-    return JSON.parse(readFileSync(storePath, "utf8")) as ArchitectStore;
+    return normalizeStore(JSON.parse(readFileSync(storePath, "utf8")) as ArchitectStore);
   } catch {
     return createSeedStore();
   }
@@ -221,6 +245,25 @@ export function addDpiInspection(input: DpiInspectionInput) {
   );
   saveStore();
   return inspection;
+}
+
+export function addJurisdiction(input: JurisdictionInput) {
+  const jurisdiction: Jurisdiction = {
+    id: createId("jur"),
+    ...input,
+    createdAt: nowIso(),
+  };
+
+  getStore().jurisdictions.unshift(jurisdiction);
+  audit(
+    jurisdiction.status === "paused" ? "warning" : "info",
+    `${jurisdiction.name} registered as ${jurisdiction.status} with ${jurisdiction.modules.length} active platform modules.`,
+    "jurisdiction.onboarding",
+    jurisdiction.id,
+  );
+  saveStore();
+
+  return jurisdiction;
 }
 
 export function updateReviewStatus(id: string, status: ReviewStatus) {
