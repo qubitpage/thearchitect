@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Architect Constitution - Multiplanetary Human Constitution</title>
+  <meta name="description" content="The full Architect Constitution for Earth and future settlements beyond: dignity, rights, transparency, merit, AI safety, ecology, and multiplanetary citizenship.">
+  <meta property="og:title" content="The Architect Constitution">
+  <meta property="og:description" content="A Multiplanetary Human Constitution for transparent governance, equal rights, merit, contribution, living systems, and AI under human authority.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://quantumqub.com/constitution.html">
+  <style>
+    :root {
+      --bg: #080d14;
+      --panel: #101722;
+      --panel-2: #151f2d;
+      --text: #e5edf7;
+      --muted: #9fb0c5;
+      --accent: #3b82f6;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --border: #263447;
+      --max: 1060px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      line-height: 1.72;
+    }
+    a { color: #8ec5ff; }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(8, 13, 20, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      min-height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+    }
+    .navlinks {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+    .navlinks a { color: var(--muted); text-decoration: none; }
+    .navlinks a:hover { color: var(--text); }
+    header {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 84px 20px 40px;
+    }
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 18px;
+    }
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+    }
+    .lead {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.18rem;
+      margin: 24px 0 0;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      background: rgba(255,255,255,0.03);
+    }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: white; }
+    main {
+      max-width: var(--max);
+      margin: 0 auto 80px;
+      padding: 0 20px 40px;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin: 26px 0 34px;
+    }
+    .summary div {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .summary strong { display: block; color: var(--green); margin-bottom: 6px; }
+    article {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: clamp(20px, 4vw, 46px);
+    }
+    article h1, article h2, article h3 {
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    article h1 { font-size: 2.2rem; }
+    article h2 {
+      margin-top: 2.6rem;
+      padding-top: 1.6rem;
+      border-top: 1px solid var(--border);
+      color: #d9ecff;
+    }
+    article h3 { color: #cde3ff; margin-top: 2rem; }
+    article p { color: #d6e1ee; }
+    article li { margin: 0.35rem 0; color: #d6e1ee; }
+    article hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    article blockquote {
+      margin: 1.4rem 0;
+      padding: 1rem 1.2rem;
+      border-left: 4px solid var(--accent);
+      background: var(--panel-2);
+      color: var(--text);
+    }
+    .loading { color: var(--muted); }
+    footer {
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      padding: 28px 20px 48px;
+    }
+    @media (max-width: 760px) {
+      nav .inner { align-items: flex-start; padding-top: 14px; padding-bottom: 14px; }
+      .navlinks { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="inner">
+      <a class="brand" href="/">The Architect v2.1</a>
+      <div class="navlinks">
+        <a href="/">Home</a>
+        <a href="/GDCOS_WHITEPAPER.md">Whitepaper</a>
+        <a href="/THE_ARCHITECT_PITCH_DECK.pdf">Pitch Deck</a>
+        <a href="https://github.com/qubitpage/thearchitect/releases/latest" target="_blank" rel="noopener">Latest Release</a>
+        <a href="https://github.com/qubitpage/thearchitect" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="eyebrow">Multiplanetary Human Constitution</div>
+    <h1>The Constitution for Earth and future settlements beyond.</h1>
+    <p class="lead">A public, opt-in constitutional protocol for dignity, transparent governance, merit-based growth, AI under human authority, peace architecture, living systems, and equal citizenship across planets.</p>
+    <div class="actions">
+      <a class="btn primary" href="#constitution-text">Read Full Constitution</a>
+      <a class="btn" href="/THE_ARCHITECT_CONSTITUTION.md">Open Markdown</a>
+      <a class="btn" href="https://github.com/qubitpage/thearchitect/blob/main/public/THE_ARCHITECT_CONSTITUTION.md" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary" aria-label="Constitution summary">
+      <div><strong>Scope</strong>Earth, orbital habitats, lunar bases, Mars settlements, and future human jurisdictions.</div>
+      <div><strong>Core Right</strong>Every person has the equal right to grow by merit, effort, contribution, and demonstrated competence.</div>
+      <div><strong>Governance</strong>Federated, voluntary, auditable, open-source, and portable across sovereign jurisdictions.</div>
+      <div><strong>Guardrail</strong>No state, company, army, market, or algorithm may externalize harm into people, other species, the planet, or the future.</div>
+    </section>
+
+    <article id="constitution-text" aria-live="polite">
+      <p class="loading">Loading the full Constitution...</p>
+    </article>
+  </main>
+
+  <footer>
+    The Architect Constitution - Version 2.1 - May 2026<br>
+    <a href="https://github.com/qubitpage/thearchitect/releases/latest" target="_blank" rel="noopener">GitHub Latest Release</a> -
+    <a href="https://github.com/qubitpage/thearchitect" target="_blank" rel="noopener">Source Repository</a>
+  </footer>
+
+  <script>
+    const article = document.getElementById("constitution-text");
+
+    function escapeHtml(value) {
+      return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function inlineMarkdown(value) {
+      return value
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>");
+    }
+
+    function renderMarkdown(markdown) {
+      const lines = markdown.replace(/\r\n/g, "\n").split("\n");
+      const html = [];
+      let listOpen = false;
+
+      function closeList() {
+        if (listOpen) {
+          html.push("</ul>");
+          listOpen = false;
+        }
+      }
+
+      for (const rawLine of lines) {
+        const line = rawLine.trimEnd();
+        const trimmed = line.trim();
+
+        if (!trimmed) {
+          closeList();
+          continue;
+        }
+
+        if (trimmed === "---") {
+          closeList();
+          html.push("<hr>");
+          continue;
+        }
+
+        const heading = trimmed.match(/^(#{1,6})\s+(.*)$/);
+        if (heading) {
+          closeList();
+          const level = Math.min(heading[1].length, 3);
+          html.push(`<h${level}>${inlineMarkdown(escapeHtml(heading[2]))}</h${level}>`);
+          continue;
+        }
+
+        const bullet = trimmed.match(/^[-*]\s+(.*)$/);
+        if (bullet) {
+          if (!listOpen) {
+            html.push("<ul>");
+            listOpen = true;
+          }
+          html.push(`<li>${inlineMarkdown(escapeHtml(bullet[1]))}</li>`);
+          continue;
+        }
+
+        if (trimmed.startsWith(">")) {
+          closeList();
+          html.push(`<blockquote>${inlineMarkdown(escapeHtml(trimmed.slice(1).trim()))}</blockquote>`);
+          continue;
+        }
+
+        closeList();
+        html.push(`<p>${inlineMarkdown(escapeHtml(trimmed))}</p>`);
+      }
+
+      closeList();
+      return html.join("\n");
+    }
+
+    fetch("/THE_ARCHITECT_CONSTITUTION.md", { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.text();
+      })
+      .then((markdown) => {
+        article.innerHTML = renderMarkdown(markdown);
+      })
+      .catch(() => {
+        article.innerHTML = '<p>The Constitution could not be loaded in this browser session. Open the markdown version directly: <a href="/THE_ARCHITECT_CONSTITUTION.md">THE_ARCHITECT_CONSTITUTION.md</a>.</p>';
+      });
+  </script>
+</body>
+</html>

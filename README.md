@@ -6,6 +6,8 @@ The Architect is an open, opt-in control plane for institutions that want power 
 
 This repository contains the first runnable implementation slice: a Next.js console with GovLedger public finance intake, Universal Sector Impact Ledger reporting, Lobster Trap-style deep prompt inspection, review actions, and an audit stream.
 
+**Latest public release:** https://github.com/qubitpage/thearchitect/releases/latest
+
 ## What Is Running Now
 
 - **GovLedger**: public spending records with classification, risk scoring, review status, and audit events.
@@ -162,8 +164,12 @@ git status --short --ignored
 
 ## Current Documents
 
+- `/constitution.html`
+- `/THE_ARCHITECT_CONSTITUTION.md`
 - `/THE_ARCHITECT_PITCH_DECK.pdf`
 - `/GDCOS_WHITEPAPER.md`
+
+The Constitution is published as a Multiplanetary Human Constitution: a rights and governance protocol for Earth, orbital habitats, lunar bases, Mars settlements, and future human jurisdictions.
 
 ## Roadmap
 
