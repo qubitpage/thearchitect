@@ -1,0 +1,10 @@
+title = "The Architect secret scanning baseline"
+
+[allowlist]
+description = "Allow intentional security policy detector words and examples"
+paths = [
+  '''src/lib/security-policy\.ts''',
+  '''README\.md''',
+  '''SECURITY\.md''',
+  '''\.env\.example''',
+]
