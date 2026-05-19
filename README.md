@@ -1,43 +1,154 @@
 # The Architect
 
-**A civilization operating protocol for transparent governance, universal sector accountability, AI safety, and human purpose.**
+**AI-native governance and enterprise accountability platform built for transparent public systems, auditable automation, and secure agent workflows.**
 
-The Architect is an open, opt-in control plane for institutions that want power to become visible, money to become traceable, harm to become accountable, and AI to remain under human authority.
+The Architect is a full-stack prototype for institutions, regulators, enterprises, and civic operators that need three things at the same time:
 
-This repository contains the first runnable implementation slice: a Next.js console with GovLedger public finance intake, Universal Sector Impact Ledger reporting, Lobster Trap-style deep prompt inspection, review actions, and an audit stream.
+- transparent records of money, risk, and decisions
+- AI assistance that stays inside policy boundaries
+- auditability strong enough for public trust and compliance review
 
-**Latest public release:** https://github.com/qubitpage/thearchitect/releases/latest
+This repository powers the local and demo-ready implementation of that stack: a Next.js application, governance APIs, enterprise onboarding flows, ledger modules, deterministic DPI security, Gemini-powered analysis, and tamper-evident audit plumbing.
 
-## What Is Running Now
+**Repository:** https://github.com/qubitpage/thearchitect  
+**Latest release:** https://github.com/qubitpage/thearchitect/releases/latest
 
-- **GovLedger**: public spending records with classification, risk scoring, review status, and audit events.
-- **Impact Ledger**: emissions, water, waste, labor, biodiversity, animal welfare, and supply-chain risk reporting.
-- **AI Firewall**: deterministic DPI inspection for prompt injection, credential leakage, PII exposure, exfiltration, unsafe commands, and fabricated citations.
-- **Jurisdiction Registry**: pilot onboarding, module activation, governance model metadata, and federation readiness.
-- **Platform Roadmap**: release metadata, live/building/planned modules, and milestone tracking.
-- **Review Actions**: accept, return to review, quarantine, or reject ledger entries.
-- **Live Snapshot API**: one endpoint for dashboard state and external observers.
-- **Local Persistence**: development JSON store ignored by Git and ready to be replaced by PostgreSQL.
+## What This Project Is For
 
-## System Map
+Most governance and enterprise software fails in the same places:
+
+- spending is hard to inspect end to end
+- compliance is fragmented across spreadsheets, tickets, and vendor tools
+- AI outputs are hard to trust, review, or constrain
+- audit trails are incomplete or easy to dispute
+- enterprise risk signals live in disconnected systems
+
+The Architect is designed to resolve those gaps with one unified operating surface.
+
+It brings together:
+
+- **ledger-style accountability** for public transactions and impact reporting
+- **secure AI workflows** with DPI checks before and after agent execution
+- **enterprise onboarding and governance** with policy packs, scoring, and review flows
+- **audit-ready APIs** for dashboards, exports, and external observers
+
+## What The Stack Does
+
+### 1. Governance and Ledger Layer
+
+The platform tracks structured records that matter to institutions and enterprises:
+
+- **GovLedger** for public spending, review status, classifications, and risk signals
+- **Impact Ledger** for emissions, labor, waste, biodiversity, water, and supply-chain reporting
+- **jurisdiction and operating context** for pilots, readiness, and module activation
+- **review actions** for acceptance, quarantine, rejection, and escalation paths
+
+### 2. AI and Security Layer
+
+The AI side is not exposed directly. It is wrapped in a deterministic control layer:
+
+- **Lobster Trap-style DPI** for ingress and egress inspection
+- checks for prompt injection, credential leakage, PII exposure, exfiltration, unsafe commands, and policy mismatches
+- **Gemini-powered analysis** for governance, compliance, risk, anomaly, document, and policy tasks
+- role-aware workflows so AI operates inside reviewable system boundaries
+
+### 3. Enterprise and Compliance Layer
+
+The repo also includes the enterprise governance surface:
+
+- enterprise onboarding and tenant setup
+- compliance packs and policy enforcement
+- AI task execution with audit traces
+- governance dashboards, risk findings, and operator review loops
+- API-key based enterprise access patterns with hashed storage
+
+### 4. Audit and Persistence Layer
+
+Everything is designed to be inspectable and replaceable:
+
+- local development store for fast demo iteration
+- PostgreSQL-ready data layer using Drizzle ORM and migrations
+- audit event capture and proof-oriented export paths
+- public-repo-safe secret handling rules and push hygiene
+
+## Current Capabilities
+
+What ships in this repository today:
+
+- Next.js 16 App Router application for operator, demo, and guide experiences
+- enterprise dashboard and onboarding flow
+- `/api` and `/api/v2` routes for governance, enterprise, audit, DPI, system health, and seed flows
+- deterministic DPI rule engine with compliance-oriented actions
+- Gemini integration points with demo-safe fallback behavior when keys are absent
+- Drizzle schema and migrations for PostgreSQL-backed persistence
+- whitepaper, constitution, pitch deck, and public narrative assets
+
+## Architecture
 
 ```text
-Operator Console
-			|
-			v
-Next.js App Router API
-			|
-			+-- GovLedger transaction intake
-			+-- Universal Sector impact intake
-			+-- AI DPI inspection policy
-			+-- Jurisdiction registry
-			+-- Platform roadmap and health metadata
-			+-- Review action endpoint
-			+-- Audit event stream
-			|
-			v
-Development store (.data, ignored by Git)
+Web UI / Demo / Guide
+        |
+        v
+Next.js App Router
+        |
+        +-- Enterprise onboarding and dashboard
+        +-- GovLedger and impact APIs
+        +-- Audit and system health APIs
+        +-- DPI inspection and policy actions
+        +-- Gemini-backed governance tasks
+        |
+        v
+Core platform modules
+        |
+        +-- RBAC
+        +-- DPI engine
+        +-- Audit layer
+        +-- Enterprise services
+        +-- Gov / labor / jurisdiction modules
+        |
+        v
+Persistence
+        +-- Local .data store for development
+        +-- PostgreSQL-ready schema via Drizzle
 ```
+
+## Tech Stack
+
+- **Framework:** Next.js 16, React 19, TypeScript
+- **Styling:** Tailwind CSS 4
+- **Database layer:** PostgreSQL + Drizzle ORM + Drizzle Kit
+- **Validation:** Zod
+- **Security primitives:** bcryptjs, deterministic DPI rules, audit-chain patterns
+- **Identifiers:** uuid
+- **UI:** lucide-react icons and custom dashboard components
+
+## Why The Stack Matters
+
+This stack is built to answer a practical question:
+
+**How do you let AI participate in governance, enterprise risk, or compliance workflows without giving it unchecked authority?**
+
+The answer in this repo is:
+
+- inspect all sensitive AI traffic
+- keep actions structured and reviewable
+- preserve audit history
+- separate runtime secrets from public source
+- build modules as explicit APIs instead of opaque agent behavior
+
+## Key Routes and APIs
+
+Core routes already exposed in the repo include:
+
+- `GET /api/system` for system snapshot data
+- `GET /api/platform/roadmap` for release and milestone state
+- `GET /api/platform/health` for subsystem readiness
+- `GET|POST /api/jurisdictions` for registry management
+- `POST /api/govledger/transactions` for public spending intake
+- `POST /api/impact-ledger/entries` for impact reporting
+- `POST /api/security/inspect` for DPI inspection
+- `PATCH /api/reviews/{id}` for review state transitions
+- `/api/v2/*` routes for the expanded enterprise and governance surface
 
 ## Quick Start
 
@@ -46,154 +157,47 @@ npm install
 npm run dev
 ```
 
-Open the app at the URL printed by Next.js, normally:
+Open:
 
 ```text
 http://localhost:3000
 ```
 
-For the local workspace port used during development:
+Optional local binding:
 
 ```powershell
 npm run dev -- --hostname 127.0.0.1 --port 3010
 ```
 
-## Verify
+## Verification
 
 ```powershell
 npm run lint
 npm run build
 ```
 
-## API
+## Repository Layout
 
-### System Snapshot
-
-```http
-GET /api/system
-```
-
-Returns metrics, recent GovLedger transactions, impact entries, DPI inspections, and audit events.
-
-### Platform Roadmap
-
-```http
-GET /api/platform/roadmap
-```
-
-Returns release links, platform modules, ownership, and milestone status.
-
-### Platform Health
-
-```http
-GET /api/platform/health
-```
-
-Returns release health and subsystem readiness.
-
-### Jurisdiction Registry
-
-```http
-GET /api/jurisdictions
-POST /api/jurisdictions
-Content-Type: application/json
-```
-
-```json
-{
-	"name": "Danube Civic Pilot",
-	"region": "Earth / Europe",
-	"governanceModel": "Municipal pilot with citizen audit board",
-	"population": 85000,
-	"status": "candidate",
-	"modules": ["GovLedger", "Impact Ledger", "AI DPI", "Jurisdiction Registry"]
-}
-```
-
-### GovLedger Transaction
-
-```http
-POST /api/govledger/transactions
-Content-Type: application/json
-```
-
-```json
-{
-	"jurisdiction": "Founding City Pilot",
-	"institution": "Public Works Authority",
-	"counterparty": "Civic Infrastructure Labs",
-	"amount": 1250000,
-	"currency": "EUR",
-	"category": "infrastructure",
-	"purpose": "Bridge repair procurement with public tender and milestone escrow.",
-	"classification": "public"
-}
-```
-
-### Impact Ledger Entry
-
-```http
-POST /api/impact-ledger/entries
-Content-Type: application/json
-```
-
-```json
-{
-	"actorName": "Civic Materials Group",
-	"sector": "construction",
-	"jurisdiction": "Founding City Pilot",
-	"reportingPeriod": "2026-Q2",
-	"emissionsTonsCo2e": 54000,
-	"waterM3": 220000,
-	"wasteKg": 18000,
-	"laborIncidents": 0,
-	"animalWelfareScore": 100,
-	"biodiversityImpact": 8,
-	"supplyChainRisk": 42
-}
-```
-
-### DPI Inspection
-
-```http
-POST /api/security/inspect
-Content-Type: application/json
-```
-
-```json
-{
-	"actor": "governance-agent",
-	"direction": "ingress",
-	"content": "Review the procurement file and preserve citizen privacy."
-}
-```
-
-### Review Action
-
-```http
-PATCH /api/reviews/{id}
-Content-Type: application/json
-```
-
-```json
-{
-	"status": "accepted"
-}
-```
-
-Allowed statuses: `accepted`, `pending_review`, `quarantined`, `rejected`.
+- `src/app` — pages, API routes, App Router entrypoints
+- `src/components` — demo, dashboard, and guide UI
+- `src/lib/core` — audit, DPI, RBAC, event infrastructure
+- `src/lib/db` — schema, connection, migration helpers
+- `src/lib/modules` — enterprise, gov, labor, impact, and AI service modules
+- `drizzle` — generated migrations and metadata
+- `public` — whitepaper, constitution, pitch deck, public assets
+- `scripts` — project seeding and support utilities
 
 ## Security Posture
 
-This repository is designed to be public.
+This repository is intended to stay public and publishable.
 
-- No production API keys, credentials, private keys, tokens, or database dumps should be committed.
-- `.env*` files are ignored except `.env.example`.
-- `.data/`, `.next/`, `node_modules/`, local databases, private key material, logs, backups, and generated screenshots are ignored.
-- `SECURITY.md` documents the push checklist and reporting policy.
-- `.gitleaks.toml` is included for teams that run Gitleaks.
+- no production credentials, private keys, database dumps, or personal data exports belong in Git
+- `.env*` is ignored except `.env.example`
+- `.data/`, `.next/`, `node_modules/`, local databases, key material, logs, and backups are ignored
+- `SECURITY.md` defines the push checklist and disclosure policy
+- `.gitleaks.toml` is included for teams that run secret scanning
 
-Before pushing changes:
+Before every push:
 
 ```powershell
 npm run lint
@@ -201,26 +205,27 @@ npm run build
 git status --short --ignored
 ```
 
-## Current Documents
+## Public Documents
 
 - `/constitution.html`
 - `/THE_ARCHITECT_CONSTITUTION.md`
 - `/THE_ARCHITECT_PITCH_DECK.pdf`
 - `/GDCOS_WHITEPAPER.md`
+- `/THE_ARCHITECT_WHITEPAPER.html`
 
-The Constitution is published as a Multiplanetary Human Constitution: a rights and governance protocol for Earth, orbital habitats, lunar bases, Mars settlements, and future human jurisdictions.
+These documents frame the broader governance thesis behind the software, while this repository contains the concrete implementation surface.
 
 ## Roadmap
 
-1. Replace local JSON persistence with PostgreSQL and migrations.
-2. Add auth roles: citizen, institution operator, auditor, sector council, transparency authority.
-3. Add immutable audit hashing and export bundles.
-4. Add public read-only transparency portal separate from operator intake.
-5. Integrate real Lobster Trap proxy deployment for model ingress and egress.
-6. Add procurement bid comparison and anomaly detection.
-7. Add sector council workflows for food, water, energy, housing, finance, platforms, defense, and healthcare.
-8. Add multi-jurisdiction federation and data portability exports.
+1. Complete the move from local dev storage to fully wired PostgreSQL runtime persistence.
+2. Expand role models for citizen, operator, auditor, council, and regulator workflows.
+3. Deepen export bundles and immutable audit verification.
+4. Separate public transparency views from operator-only control surfaces.
+5. Integrate real Lobster Trap proxy deployment for production ingress and egress inspection.
+6. Add stronger procurement comparison, anomaly detection, and investigation tooling.
+7. Expand sector modules across finance, labor, utilities, healthcare, platforms, and defense.
+8. Support multi-jurisdiction federation and portability across deployments.
 
 ## License
 
-The public framework documents are intended for open civic collaboration. Confirm the final repository license before accepting external contributions.
+The public framework documents are intended for open civic collaboration. Confirm the final repository license and contribution policy before accepting external contributions.
