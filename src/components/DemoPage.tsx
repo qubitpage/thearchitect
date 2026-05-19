@@ -205,7 +205,7 @@ function Onboarding({ onDone }: { onDone: (slug: string) => void }) {
     setBusy(true);
     setError("");
     try {
-      const res = await fetch("/api/enterprise", {
+      const res = await fetch("/api/v2/enterprise", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
