@@ -1,5 +1,31 @@
 # The Architect
 
+<table>
+<tr>
+<td width="130" valign="top">
+  <a href="book/en/the-architect.html">
+    <img src="book/assets/cover-en.jpg" alt="The Architect" width="120" />
+  </a>
+</td>
+<td valign="top">
+
+**A Blueprint for the Civilization That Survives Itself** · *by Mircea S. Rusu*
+
+> Every civilization is, in the end, a piece of code.
+
+The book behind the platform — a non-fiction work on civilizational systems redesign, governance architecture, and what comes after the old operating system reaches end of life.
+
+📥 **[English PDF](book/en/the-architect.pdf)** &nbsp;·&nbsp; 🌐 **[Read Online (EN)](book/en/the-architect.html)** &nbsp;·&nbsp; 📄 **[Free Sampler](book/en/the-architect-sampler.pdf)**  
+📥 **[PDF în Română](book/ro/arhitectul.pdf)** &nbsp;·&nbsp; 🌐 **[Citește Online (RO)](book/ro/arhitectul.html)** &nbsp;·&nbsp; 📄 **[Sampler Gratuit](book/ro/arhitectul-sampler.pdf)**
+
+→ **[Full book page with both editions](book/README.md)**
+
+</td>
+</tr>
+</table>
+
+---
+
 **AI-native governance and enterprise accountability platform built for transparent public systems, auditable automation, and secure agent workflows.**
 
 The Architect is a full-stack prototype for institutions, regulators, enterprises, and civic operators that need three things at the same time:
